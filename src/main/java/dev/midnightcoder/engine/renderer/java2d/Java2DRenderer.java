@@ -1,6 +1,8 @@
 package dev.midnightcoder.engine.renderer.java2d;
 
+import dev.midnightcoder.engine.entity.Entity;
 import dev.midnightcoder.engine.renderer.Renderer;
+import dev.midnightcoder.engine.renderer.graphics.Texture;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -14,7 +16,7 @@ import java.awt.image.BufferStrategy;
 public class Java2DRenderer implements Renderer {
     private final Canvas canvas;
 
-    private BufferStrategy bufferStrategy;
+    private final BufferStrategy bufferStrategy;
     private Graphics2D gfx2D;
 
     public Java2DRenderer(Canvas canvas) {
@@ -38,6 +40,14 @@ public class Java2DRenderer implements Renderer {
         bufferStrategy.show();
 
         Toolkit.getDefaultToolkit().sync();
+    }
+
+    @Override
+    public void update() {}
+
+    @Override
+    public void renderTexture(Texture texture, int x, int y) {
+        getGraphics2D().drawImage(texture.image(), x, y, null);
     }
 
     public Graphics2D getGraphics2D() {

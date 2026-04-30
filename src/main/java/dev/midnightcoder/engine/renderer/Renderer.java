@@ -1,5 +1,7 @@
 package dev.midnightcoder.engine.renderer;
 
+import dev.midnightcoder.engine.renderer.graphics.Texture;
+
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightEngine
@@ -9,4 +11,7 @@ package dev.midnightcoder.engine.renderer;
 public interface Renderer {
     void begin();
     void end();
+    void update();
+
+    void renderTexture(Texture texture, int x, int y);
 }
