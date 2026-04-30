@@ -5,5 +5,8 @@ package dev.midnightcoder.engine.renderer;
  * @project MidnightEngine
  * @social Discord: Glabay
  * @since 2026-04-30
-*/public interface Renderer {
+ */
+public interface Renderer {
+    void begin();
+    void end();
 }

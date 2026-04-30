@@ -8,5 +8,5 @@ import dev.midnightcoder.engine.scene.Scene;
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public class LoginScreen extends Scene {
+public class GameScreen extends Scene {
 }

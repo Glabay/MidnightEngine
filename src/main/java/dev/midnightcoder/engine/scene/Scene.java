@@ -1,9 +1,16 @@
 package dev.midnightcoder.engine.scene;
 
+import dev.midnightcoder.engine.renderer.Renderer;
+
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightEngine
  * @social Discord: Glabay
  * @since 2026-04-30
-*/public interface Scene {
+ */
+public abstract class Scene {
+    public void onLoad() {}
+    public void update(double deltaTime) {}
+    public void render(Renderer renderer) {}
+    public void onUnload() {}
 }
