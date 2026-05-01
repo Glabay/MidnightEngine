@@ -10,7 +10,7 @@ import dev.midnightcoder.engine.renderer.Renderer;
  */
 public abstract class Scene {
     public void onLoad() {}
-    public void update(double deltaTime) {}
+    public void update(double delta) {}
     public void render(Renderer renderer) {}
     public void onUnload() {}
 }
