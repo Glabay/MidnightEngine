@@ -13,6 +13,9 @@ public abstract class Entity {
     protected int x;
     protected int y;
 
+    protected int width;
+    protected int height;
+
     protected Texture texture;
 
     public Entity(int x, int y, Texture texture) {
@@ -26,6 +29,14 @@ public abstract class Entity {
     public void render(Renderer renderer) {
         if (texture != null)
             renderer.renderTexture(texture, x, y);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public int getX() {
