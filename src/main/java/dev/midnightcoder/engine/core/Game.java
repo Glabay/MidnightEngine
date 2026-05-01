@@ -1,5 +1,6 @@
 package dev.midnightcoder.engine.core;
 
+import dev.midnightcoder.engine.input.InputManager;
 import dev.midnightcoder.engine.renderer.Renderer;
 
 /**
@@ -9,7 +10,7 @@ import dev.midnightcoder.engine.renderer.Renderer;
  * @since 2026-04-30
  */
 public interface Game {
-    void init();
+    void init(InputManager input);
     void update(double delta);
     void render(Renderer renderer);
     void shutdown();
