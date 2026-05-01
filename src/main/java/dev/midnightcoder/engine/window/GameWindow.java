@@ -24,13 +24,17 @@ public class GameWindow {
 
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setIgnoreRepaint(true);
+        canvas.setFocusable(true);
+        canvas.requestFocus();
+
         canvas.addKeyListener(inputManager);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
         frame.add(canvas, BorderLayout.CENTER);
         frame.pack();
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         canvas.createBufferStrategy(3);
