@@ -1,7 +1,9 @@
 package dev.midnightcoder.engine.renderer.graphics;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -19,5 +21,19 @@ public class TextureFactory {
             graphics.dispose();
 
         return new Texture(texturedImage);
+    }
+
+    public static Texture createFromImageFile(String path) {
+        try {
+            var file = TextureFactory.class.getResourceAsStream(path);
+            if (file == null)
+                throw new IllegalArgumentException("Resource not found: " + path);
+
+            var image = ImageIO.read(file);
+            return new Texture(image);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failed to load texture from file: " + path, e);
+        }
     }
 }
