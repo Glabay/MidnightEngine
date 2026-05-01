@@ -1,5 +1,7 @@
 package dev.midnightcoder.engine.window;
 
+import dev.midnightcoder.engine.input.AWTInputManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,13 +15,16 @@ public class GameWindow {
 
     private final JFrame frame;
     private final Canvas canvas;
+    private final AWTInputManager inputManager;
 
-    public GameWindow(String title, int width, int height) {
+    public GameWindow(String title, int width, int height, AWTInputManager inputManager) {
         frame = new JFrame(title);
+        this.inputManager = inputManager;
         canvas = new Canvas();
 
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setIgnoreRepaint(true);
+        canvas.addKeyListener(inputManager);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);

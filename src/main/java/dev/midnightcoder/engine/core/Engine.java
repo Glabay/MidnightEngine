@@ -1,5 +1,6 @@
 package dev.midnightcoder.engine.core;
 
+import dev.midnightcoder.engine.input.AWTInputManager;
 import dev.midnightcoder.engine.renderer.java2d.Java2DRenderer;
 import dev.midnightcoder.engine.window.GameWindow;
 import dev.midnightcoder.engine.window.WindowConfig;
@@ -13,10 +14,15 @@ import dev.midnightcoder.engine.window.WindowConfig;
 public class Engine {
 
     public static void start(Game game) {
-        var gameWindow = new GameWindow("Midnight Engine", WindowConfig.getWindowWidth(), WindowConfig.getWindowHeight());
+        var inputManager = new AWTInputManager();
+        var gameWindow = new GameWindow("Midnight Engine",
+            WindowConfig.getWindowWidth(),
+            WindowConfig.getWindowHeight(),
+            inputManager
+        );
         var renderer = new Java2DRenderer(gameWindow.getCanvas());
 
-        var loop = new GameLoop(game, renderer);
+        var loop = new GameLoop(game, renderer, inputManager);
 
         loop.start();
     }

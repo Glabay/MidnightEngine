@@ -1,9 +1,7 @@
 package dev.midnightcoder.engine.core;
 
+import dev.midnightcoder.engine.input.InputManager;
 import dev.midnightcoder.engine.renderer.Renderer;
-
-import java.sql.Time;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -21,10 +19,12 @@ public class GameLoop implements Runnable {
     private final Thread gameThread;
     private final Game game;
     private final Renderer renderer;
+    private final InputManager inputManager;
 
-    public GameLoop(Game game, Renderer renderer) {
+    public GameLoop(Game game, Renderer renderer, InputManager inputManager) {
         this.game = game;
         this.renderer = renderer;
+        this.inputManager = inputManager;
         this.gameThread = new Thread(this, "Midnight-Engine-Game-Thread");
     }
 
@@ -40,7 +40,7 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        game.init();
+        game.init(inputManager);
 
         var delta = 0.0;
         var lastTime = System.nanoTime();
@@ -53,6 +53,7 @@ public class GameLoop implements Runnable {
 
             if (delta >= 1) {
                 game.update(delta);
+                inputManager.update();
                 renderer.begin();
                 game.render(renderer);
                 renderer.end();
