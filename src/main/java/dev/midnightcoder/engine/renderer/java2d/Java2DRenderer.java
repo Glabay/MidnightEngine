@@ -14,9 +14,10 @@ import java.awt.image.BufferStrategy;
  */
 public class Java2DRenderer implements Renderer {
     private final Canvas canvas;
-
     private final BufferStrategy bufferStrategy;
+
     private Graphics2D gfx2D;
+    private Font font;
 
     public Java2DRenderer(Canvas canvas) {
         this.canvas = canvas;
@@ -49,7 +50,24 @@ public class Java2DRenderer implements Renderer {
         getGraphics2D().drawImage(texture.image(), x, y, null);
     }
 
+    @Override
+    public void renderText(String text, int x, int y) {
+        getGraphics2D().setFont(getFont());
+        getGraphics2D().setColor(Color.YELLOW);
+        getGraphics2D().drawString(text, x, y);
+    }
+
     public Graphics2D getGraphics2D() {
         return gfx2D;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
+
+    public Font getFont() {
+        if (font == null)
+            font = getGraphics2D().getFont().deriveFont(Font.PLAIN, 16);
+        return font;
     }
 }

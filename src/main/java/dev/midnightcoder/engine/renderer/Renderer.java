@@ -2,6 +2,8 @@ package dev.midnightcoder.engine.renderer;
 
 import dev.midnightcoder.engine.renderer.graphics.Texture;
 
+import java.awt.*;
+
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightEngine
@@ -14,4 +16,7 @@ public interface Renderer {
     void update();
 
     void renderTexture(Texture texture, int x, int y);
+
+    void renderText(String text, int x, int y);
+    void setFont(Font font);
 }
