@@ -1,6 +1,5 @@
 package dev.midnightcoder.engine.renderer.java2d;
 
-import dev.midnightcoder.engine.entity.Entity;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.graphics.Texture;
 
