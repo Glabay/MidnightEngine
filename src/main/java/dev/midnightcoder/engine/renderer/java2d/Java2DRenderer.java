@@ -47,7 +47,13 @@ public class Java2DRenderer implements Renderer {
 
     @Override
     public void renderTexture(Texture texture, int x, int y) {
-        getGraphics2D().drawImage(texture.image(), x, y, null);
+        renderImage(texture.image(), x, y);
+    }
+
+    @Override
+    public void renderImage(Image image, int x, int y) {
+        getGraphics2D().drawImage(image, x, y, null);
+
     }
 
     @Override
@@ -57,12 +63,18 @@ public class Java2DRenderer implements Renderer {
         getGraphics2D().drawString(text, x, y);
     }
 
+    @Override
     public Graphics2D getGraphics2D() {
         return gfx2D;
     }
 
     public void setFont(Font font) {
         this.font = font;
+    }
+
+    @Override
+    public void setColor(Color color) {
+        getGraphics2D().setColor(color);
     }
 
     public Font getFont() {

@@ -16,7 +16,11 @@ public interface Renderer {
     void update();
 
     void renderTexture(Texture texture, int x, int y);
+    void renderImage(Image image, int x, int y);
 
     void renderText(String text, int x, int y);
     void setFont(Font font);
+    void setColor(Color color);
+
+    Graphics2D getGraphics2D();
 }
