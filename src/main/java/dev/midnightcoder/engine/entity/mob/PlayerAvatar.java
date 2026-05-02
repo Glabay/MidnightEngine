@@ -22,7 +22,7 @@ public class PlayerAvatar extends Mob {
     private final GameMap currentMap;
 
     public PlayerAvatar(GameMap currentMap, InputManager input, PlayerMovement movement) {
-        super(100, 100);
+        super(100 << 5, 100 << 5);
         this.input = input;
         this.movement = movement;
         this.currentMap = currentMap;
