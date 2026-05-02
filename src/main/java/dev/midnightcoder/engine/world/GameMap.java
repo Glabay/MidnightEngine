@@ -45,6 +45,10 @@ public abstract class GameMap {
         return tileMap;
     }
 
+    public Camera2D getCamera() {
+        return camera;
+    }
+
     public int getSpriteSize() {
         return SPRITE_SIZE;
     }
