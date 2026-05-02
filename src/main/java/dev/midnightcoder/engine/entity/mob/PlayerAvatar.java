@@ -1,10 +1,14 @@
 package dev.midnightcoder.engine.entity.mob;
 
-import dev.midnightcoder.engine.entity.Entity;
 import dev.midnightcoder.engine.input.InputManager;
+import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.graphics.Texture;
-import dev.midnightcoder.engine.system.Movement;
+import dev.midnightcoder.engine.renderer.graphics.TextureFactory;
+import dev.midnightcoder.engine.system.PlayerMovement;
+import dev.midnightcoder.engine.window.WindowConfig;
+import dev.midnightcoder.engine.world.GameMap;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -13,20 +17,24 @@ import java.awt.event.KeyEvent;
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public class PlayerAvatar extends Entity {
-
+public class PlayerAvatar extends Mob {
     private final InputManager input;
-    private final Movement movement;
+    private final PlayerMovement movement;
 
-    private final int moveSpeed = 1;
-    private int speed = 3;
+    private final int screenX;
+    private final int screenY;
 
-    public PlayerAvatar(int x, int y, Texture texture, InputManager input, Movement movement) {
-        super(x, y, texture);
+    public PlayerAvatar(int x, int y, InputManager input, PlayerMovement movement) {
+        super(x, y);
         this.input = input;
         this.movement = movement;
         width = 32;
         height = 32;
+
+        texture = TextureFactory.createSolidColor(32, 32, Color.RED);
+
+        screenX = (WindowConfig.getWindowWidth() / 2) - getWidth() / 2;
+        screenY = (WindowConfig.getWindowHeight() / 2) - getHeight() / 2;
     }
 
     public int getMoveX() {
@@ -55,5 +63,11 @@ public class PlayerAvatar extends Entity {
         var dy = getMoveY() * speed * (int) delta;
 
         movement.move(this, dx, dy);
+    }
+
+    @Override
+    public void render(Renderer renderer) {
+        if (texture != null)
+            renderer.renderTexture(texture, screenX, screenY);
     }
 }
