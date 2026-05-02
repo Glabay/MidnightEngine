@@ -19,8 +19,6 @@ public abstract class GameMap {
 
     protected final int SPRITE_SIZE = 32;
 
-    public abstract void initTileMap();
-
     public void renderTileMap(Renderer renderer) {
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
