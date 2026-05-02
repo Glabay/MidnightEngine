@@ -28,13 +28,13 @@ public class GameLoop implements Runnable {
         this.gameThread = new Thread(this, "Midnight-Engine-Game-Thread");
     }
 
-    public void start() {
+    public synchronized void start() {
         if (running) return;
         running = true;
         gameThread.start();
     }
 
-    public void stop() {
+    public synchronized void stop() {
         running = false;
     }
 
