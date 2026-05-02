@@ -18,10 +18,9 @@ public abstract class Entity {
 
     protected Texture texture;
 
-    public Entity(int x, int y, Texture texture) {
+    public Entity(int x, int y) {
         this.x = x;
         this.y = y;
-        this.texture = texture;
     }
 
     public abstract void update(double delta);
