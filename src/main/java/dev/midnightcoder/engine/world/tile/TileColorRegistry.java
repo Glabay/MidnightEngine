@@ -13,6 +13,15 @@ import java.util.Map;
 public class TileColorRegistry {
     private final Map<String, TileType> tileTypeRegistry = new HashMap<>();
 
+    private static TileColorRegistry instance;
+
+    public static TileColorRegistry getInstance() {
+        if (instance == null) {
+            instance = new TileColorRegistry();
+        }
+        return instance;
+    }
+
     public void register(TileColor color, TileType tileType) {
         tileTypeRegistry.put(color.getColorCode(), tileType);
     }
@@ -24,4 +33,6 @@ public class TileColorRegistry {
     public int getRegistrySize() {
         return tileTypeRegistry.size();
     }
+
+
 }

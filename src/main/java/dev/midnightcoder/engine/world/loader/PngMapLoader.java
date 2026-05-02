@@ -14,11 +14,6 @@ import java.awt.*;
  * @since 2026-05-01
  */
 public class PngMapLoader {
-    private final TileColorRegistry registry;
-
-    public PngMapLoader(TileColorRegistry tileColorRegistry) {
-        this.registry = tileColorRegistry;
-    }
 
     public TileMap loadMapFile(String path) {
         try {
@@ -38,7 +33,7 @@ public class PngMapLoader {
 
                     var pixel = image.getRGB(x, y);
                     var hexStr = String.format("0x%08X", pixel);
-                    var tileType = registry.getTileType(hexStr);
+                    var tileType = TileColorRegistry.getInstance().getTileType(hexStr);
                     if (tileType == null)
                         continue;
                     tileMap.setTile(x, y, new Tile(x, y, tileType));
