@@ -34,6 +34,11 @@ public class AWTInputManager implements InputManager, KeyListener {
     }
 
     @Override
+    public boolean noKeysHeld() {
+        return currentKeys.isEmpty();
+    }
+
+    @Override
     public void update() {
         previousKeys.clear();
         previousKeys.addAll(currentKeys);
