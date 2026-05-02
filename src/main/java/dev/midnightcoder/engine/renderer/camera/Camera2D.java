@@ -10,11 +10,11 @@ public class Camera2D {
     private float x;
     private float y;
 
-    private int viewWidth;
-    private int viewHeight;
+    private final int viewWidth;
+    private final int viewHeight;
 
-    private int worldWidth;
-    private int worldHeight;
+    private final int worldWidth;
+    private final int worldHeight;
 
     public Camera2D(int viewWidth, int viewHeight, int worldWidth, int worldHeight) {
         this.viewWidth = viewWidth;
