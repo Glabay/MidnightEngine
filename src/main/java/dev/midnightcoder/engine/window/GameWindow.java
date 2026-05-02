@@ -11,36 +11,34 @@ import java.awt.*;
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public class GameWindow {
+public class GameWindow extends Canvas {
 
     private final JFrame frame;
-    private final Canvas canvas;
     private final AWTInputManager inputManager;
 
     public GameWindow(String title, int width, int height, AWTInputManager inputManager) {
-        frame = new JFrame(title);
         this.inputManager = inputManager;
-        canvas = new Canvas();
 
-        canvas.setPreferredSize(new Dimension(width, height));
-        canvas.setIgnoreRepaint(true);
-        canvas.setFocusable(true);
-        canvas.requestFocus();
+        setPreferredSize(new Dimension(width, height));
+        setIgnoreRepaint(true);
+        setFocusable(true);
+        requestFocus();
 
-        canvas.addKeyListener(inputManager);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        frame.add(canvas, BorderLayout.CENTER);
-        frame.pack();
+        frame = new JFrame(title);
         frame.setResizable(false);
+        frame.add(this);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+
         frame.setVisible(true);
 
-        canvas.createBufferStrategy(3);
+        createBufferStrategy(3);
+
+        addKeyListener(inputManager);
     }
 
     public Canvas getCanvas() {
-        return canvas;
+        return this;
     }
 }
