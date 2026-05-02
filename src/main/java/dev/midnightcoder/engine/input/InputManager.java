@@ -10,6 +10,7 @@ public interface InputManager {
     boolean isKeyPressed(int keyCode);
     boolean isKeyReleased(int keyCode);
     boolean isKeyHeld(int keyCode);
+    boolean noKeysHeld();
 
     void update();
 }
