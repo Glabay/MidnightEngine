@@ -11,13 +11,17 @@ import java.util.Map;
  * @since 2026-05-01
  */
 public class TileColorRegistry {
-    private final Map<Integer, TileType> tileTypeRegistry = new HashMap<>();
+    private final Map<String, TileType> tileTypeRegistry = new HashMap<>();
 
-    public void register(Color color, TileType tileType) {
-        tileTypeRegistry.put(color.getRGB(), tileType);
+    public void register(TileColor color, TileType tileType) {
+        tileTypeRegistry.put(color.getColorCode(), tileType);
     }
 
-    public TileType getTileType(Color color) {
-        return tileTypeRegistry.get(color.getRGB());
+    public TileType getTileType(String colorCode) {
+        return tileTypeRegistry.get(colorCode);
+    }
+
+    public int getRegistrySize() {
+        return tileTypeRegistry.size();
     }
 }

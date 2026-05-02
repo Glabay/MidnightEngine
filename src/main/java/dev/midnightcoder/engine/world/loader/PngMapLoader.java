@@ -35,15 +35,15 @@ public class PngMapLoader {
 
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    var color = new Color(image.getRGB(x, y), true);
-                    var tileType = registry.getTileType(color);
+
+                    var pixel = image.getRGB(x, y);
+                    var hexStr = String.format("0x%08X", pixel);
+                    var tileType = registry.getTileType(hexStr);
                     if (tileType == null)
                         continue;
-
                     tileMap.setTile(x, y, new Tile(x, y, tileType));
                 }
             }
-
             return tileMap;
         }
         catch (Exception e) {
