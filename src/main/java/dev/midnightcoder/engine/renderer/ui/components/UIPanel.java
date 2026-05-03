@@ -6,6 +6,7 @@ import dev.midnightcoder.engine.util.Vec2i;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  * @since 2026-05-01
  */
 public class UIPanel extends UIComponent {
-    protected List<UIComponent> children;
+    protected List<UIComponent> children = new ArrayList<>();
 
     protected Vec2i size;
 
