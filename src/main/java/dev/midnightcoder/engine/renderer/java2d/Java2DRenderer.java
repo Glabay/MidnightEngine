@@ -58,7 +58,6 @@ public class Java2DRenderer implements Renderer {
 
     @Override
     public void renderText(String text, int x, int y) {
-        getGraphics2D().setFont(getFont());
         getGraphics2D().setColor(Color.YELLOW);
         getGraphics2D().drawString(text, x, y);
     }
@@ -69,17 +68,11 @@ public class Java2DRenderer implements Renderer {
     }
 
     public void setFont(Font font) {
-        this.font = font;
+        getGraphics2D().setFont(font);
     }
 
     @Override
     public void setColor(Color color) {
         getGraphics2D().setColor(color);
-    }
-
-    public Font getFont() {
-        if (font == null)
-            font = getGraphics2D().getFont().deriveFont(Font.PLAIN, 16);
-        return font;
     }
 }
