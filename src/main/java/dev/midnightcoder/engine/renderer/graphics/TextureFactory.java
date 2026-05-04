@@ -1,5 +1,7 @@
 package dev.midnightcoder.engine.renderer.graphics;
 
+import dev.midnightcoder.engine.util.Vec2i;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -35,5 +37,12 @@ public class TextureFactory {
         catch (IOException e) {
             throw new RuntimeException("Failed to load texture from file: " + path, e);
         }
+    }
+
+    public static Texture createTextureFromSpriteSheet(BufferedImage spriteSheet, int spriteSize, Vec2i slot) {
+        var x = slot.x * spriteSize;
+        var y = slot.y * spriteSize;
+        var sprite = spriteSheet.getSubimage(x, y, spriteSize, spriteSize);
+        return new Texture(sprite);
     }
 }
