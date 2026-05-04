@@ -1,6 +1,7 @@
 package dev.midnightcoder.engine.window;
 
-import dev.midnightcoder.engine.input.AWTInputManager;
+import dev.midnightcoder.engine.input.keyboard.AWTKeyboardInputManager;
+import dev.midnightcoder.engine.input.mouse.AWTMouseInputHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +15,12 @@ import java.awt.*;
 public class GameWindow extends Canvas {
 
     private final JFrame frame;
-    private final AWTInputManager inputManager;
+    private final AWTKeyboardInputManager inputManager;
+    private final AWTMouseInputHandler mouseManager;
 
-    public GameWindow(String title, int width, int height, AWTInputManager inputManager) {
+    public GameWindow(String title, int width, int height, AWTKeyboardInputManager inputManager) {
         this.inputManager = inputManager;
+        this.mouseManager = new AWTMouseInputHandler();
 
         setPreferredSize(new Dimension(width, height));
         setIgnoreRepaint(true);
@@ -36,6 +39,8 @@ public class GameWindow extends Canvas {
         createBufferStrategy(3);
 
         addKeyListener(inputManager);
+        addMouseListener(mouseManager);
+        addMouseMotionListener(mouseManager);
     }
 
     public Canvas getCanvas() {

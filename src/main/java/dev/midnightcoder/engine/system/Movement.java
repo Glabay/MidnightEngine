@@ -11,7 +11,7 @@ import dev.midnightcoder.engine.world.tile.CollisionFlag;
  * @since 2026-05-02
  */
 public abstract class Movement {
-    private final TileMap tileMap;
+    protected final TileMap tileMap;
 
     public Movement(TileMap tileMap) {
         this.tileMap = tileMap;
@@ -19,9 +19,4 @@ public abstract class Movement {
 
     public abstract void move(Entity mob, int dx, int dy);
 
-    protected boolean isBlocked(int tileX, int tileY) {
-        var tile = tileMap.getTile(tileX, tileY);
-        return tile != null &&
-            tile.type().getCollisionFlags() != CollisionFlag.NONE.getMask();
-    }
 }

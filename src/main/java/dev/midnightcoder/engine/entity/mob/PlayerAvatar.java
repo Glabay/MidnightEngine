@@ -1,9 +1,10 @@
 package dev.midnightcoder.engine.entity.mob;
 
-import dev.midnightcoder.engine.input.InputManager;
+import dev.midnightcoder.engine.input.keyboard.KeyboardInputManager;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.graphics.TextureFactory;
-import dev.midnightcoder.engine.system.PlayerMovement;
+import dev.midnightcoder.engine.system.Movement;
+import dev.midnightcoder.engine.util.Vec2i;
 import dev.midnightcoder.engine.world.GameMap;
 
 import java.awt.*;
@@ -16,13 +17,13 @@ import java.awt.event.KeyEvent;
  * @since 2026-04-30
  */
 public class PlayerAvatar extends Mob {
-    private final InputManager input;
-    private final PlayerMovement movement;
+    private final KeyboardInputManager input;
+    private final Movement movement;
 
     private final GameMap currentMap;
 
-    public PlayerAvatar(GameMap currentMap, InputManager input, PlayerMovement movement) {
-        super(100 << 5, 100 << 5);
+    public PlayerAvatar(Vec2i position, GameMap currentMap, KeyboardInputManager input, Movement movement) {
+        super(position.getX(), position.getY());
         this.input = input;
         this.movement = movement;
         this.currentMap = currentMap;
@@ -46,6 +47,16 @@ public class PlayerAvatar extends Mob {
         return dy;
     }
 
+    public GameMap getCurrentMap() {
+        return currentMap;
+    }
+
+    /**
+     * Update movement and camera follow
+     * <p>
+     * Can be ignored if implementing custom movement logic
+     * @param delta - time delta
+     */
     @Override
     public void update(double delta) {
         // running

@@ -1,6 +1,6 @@
 package dev.midnightcoder.engine.renderer.ui.components;
 
-import dev.midnightcoder.engine.input.Mouse;
+import dev.midnightcoder.engine.input.mouse.AWTMouseInputHandler;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.util.Vec2i;
 
@@ -15,8 +15,10 @@ import java.awt.image.BufferedImage;
  * @since 2026-05-01
  */
 public class UIButton extends UIComponent {
+    private final AWTMouseInputHandler mouseInputHandler;
+    private final UIAction action;
+
     private UIButtonListener buttonListener;
-    private UIAction action;
     private UILabel label;
 
     private boolean inside = false;
@@ -25,8 +27,9 @@ public class UIButton extends UIComponent {
 
     private Image icon;
 
-    public UIButton(Vec2i position, Vec2i size, UIAction actionListnener) {
+    public UIButton(AWTMouseInputHandler mouseHandler, Vec2i position, Vec2i size, UIAction actionListnener) {
         super(position, size);
+        this.mouseInputHandler = mouseHandler;
         this.action = actionListnener;
         Vec2i lp = new Vec2i(position);
         lp.x += 6;
@@ -37,8 +40,9 @@ public class UIButton extends UIComponent {
         init();
     }
 
-    public UIButton(Vec2i position, Vec2i size, String text, UIAction actionListnener) {
+    public UIButton(AWTMouseInputHandler mouseHandler, Vec2i position, Vec2i size, String text, UIAction actionListnener) {
         super(position, size);
+        this.mouseInputHandler = mouseHandler;
         this.action = actionListnener;
         Vec2i lp = new Vec2i(position);
         lp.x += 6;
@@ -49,8 +53,9 @@ public class UIButton extends UIComponent {
         init();
     }
 
-    public UIButton(Vec2i position, Vec2i size, Vec2i offset, String text, Color color, UIAction actionListnener) {
+    public UIButton(AWTMouseInputHandler mouseHandler, Vec2i position, Vec2i size, Vec2i offset, String text, Color color, UIAction actionListnener) {
         super(position, size);
+        this.mouseInputHandler = mouseHandler;
         this.action = actionListnener;
         Vec2i lp = new Vec2i(position);
         lp.x += offset.x;
@@ -61,8 +66,9 @@ public class UIButton extends UIComponent {
         init();
     }
 
-    public UIButton(Vec2i position, BufferedImage icon, UIAction actionListnener) {
+    public UIButton(AWTMouseInputHandler mouseHandler, Vec2i position, BufferedImage icon, UIAction actionListnener) {
         super(position, new Vec2i(icon.getWidth(), icon.getHeight()));
+        this.mouseInputHandler = mouseHandler;
         this.action = actionListnener;
         setColor(0xCDCDCD);
         setImage(icon);
@@ -99,11 +105,10 @@ public class UIButton extends UIComponent {
 
     public void update() {
         Rectangle rect = new Rectangle(getAbsolutePosition().x, getAbsolutePosition().y, size.x, size.y);
-        boolean leftMouseButtonDown = Mouse.getButton() == MouseEvent.BUTTON1;
-        if (rect.contains(new Point(Mouse.getX(), Mouse.getY()))) {
+        boolean leftMouseButtonDown = mouseInputHandler.getButton() == MouseEvent.BUTTON1;
+        if (rect.contains(new Point(mouseInputHandler.getX(), mouseInputHandler.getY()))) {
             if (!inside) {
-                if (leftMouseButtonDown) ignorePressed = true;
-                else ignorePressed = false;
+                ignorePressed = leftMouseButtonDown;
 
                 buttonListener.entered(this);
             }
@@ -112,7 +117,8 @@ public class UIButton extends UIComponent {
             if (!pressed && !ignorePressed && leftMouseButtonDown) {
                 buttonListener.pressed(this);
                 pressed = true;
-            } else if (Mouse.getButton() == MouseEvent.NOBUTTON) {
+            }
+            else if (mouseInputHandler.getButton() == MouseEvent.NOBUTTON) {
                 if (pressed) {
                     buttonListener.released(this);
                     pressed = false;

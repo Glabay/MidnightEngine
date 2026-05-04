@@ -1,4 +1,4 @@
-package dev.midnightcoder.engine.input;
+package dev.midnightcoder.engine.input.keyboard;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -6,7 +6,7 @@ package dev.midnightcoder.engine.input;
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public interface InputManager {
+public interface KeyboardInputManager {
     boolean isKeyPressed(int keyCode);
     boolean isKeyReleased(int keyCode);
     boolean isKeyHeld(int keyCode);

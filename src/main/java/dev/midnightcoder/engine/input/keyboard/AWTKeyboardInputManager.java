@@ -1,4 +1,4 @@
-package dev.midnightcoder.engine.input;
+package dev.midnightcoder.engine.input.keyboard;
 
 import java.awt.event.*;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import java.util.Set;
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public class AWTInputManager implements InputManager, KeyListener, MouseMotionListener, MouseListener {
+public class AWTKeyboardInputManager implements KeyboardInputManager, KeyListener {
 
     private final Set<Integer> currentKeys = new HashSet<>();
     private final Set<Integer> previousKeys = new HashSet<>();
@@ -55,25 +55,4 @@ public class AWTInputManager implements InputManager, KeyListener, MouseMotionLi
     public void keyReleased(KeyEvent e) {
         currentKeys.remove(e.getKeyCode());
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
-    @Override
-    public void mouseDragged(MouseEvent e) {}
-
-    @Override
-    public void mouseMoved(MouseEvent e) {}
 }

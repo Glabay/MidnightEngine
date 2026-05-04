@@ -1,6 +1,7 @@
 package dev.midnightcoder.engine.core;
 
-import dev.midnightcoder.engine.input.InputManager;
+import dev.midnightcoder.engine.input.keyboard.KeyboardInputManager;
+import dev.midnightcoder.engine.input.mouse.AWTMouseInputHandler;
 import dev.midnightcoder.engine.renderer.Renderer;
 
 /**
@@ -19,12 +20,14 @@ public class GameLoop implements Runnable {
     private final Thread gameThread;
     private final Game game;
     private final Renderer renderer;
-    private final InputManager inputManager;
+    private final KeyboardInputManager inputManager;
+    private final AWTMouseInputHandler mouseManager;
 
-    public GameLoop(Game game, Renderer renderer, InputManager inputManager) {
+    public GameLoop(Game game, Renderer renderer, KeyboardInputManager inputManager, AWTMouseInputHandler mouseManager) {
         this.game = game;
         this.renderer = renderer;
         this.inputManager = inputManager;
+        this.mouseManager = mouseManager;
         this.gameThread = new Thread(this, "Midnight-Engine-Game-Thread");
     }
 
@@ -40,7 +43,7 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        game.init(inputManager);
+        game.init(inputManager, mouseManager);
 
         var delta = 0.0;
         var lastTime = System.nanoTime();
