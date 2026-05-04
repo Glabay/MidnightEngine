@@ -3,7 +3,6 @@ package dev.midnightcoder.engine.world;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.camera.Camera2D;
 import dev.midnightcoder.engine.world.tile.Tile;
-import dev.midnightcoder.engine.world.tile.TileColorRegistry;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -14,7 +13,6 @@ import dev.midnightcoder.engine.world.tile.TileColorRegistry;
 public abstract class GameMap {
     protected TileMap tileMap;
     protected Camera2D camera;
-    protected TileColorRegistry tileColorRegistry;
 
     protected int mapWidth;
     protected int mapHeight;
