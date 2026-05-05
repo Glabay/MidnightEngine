@@ -94,7 +94,7 @@ public class UIButton extends UIComponent {
     }
 
     public void setText(String text) {
-        if (text == "") label.active = false;
+        if (text.isBlank()) label.active = false;
         else label.text = text;
     }
 
