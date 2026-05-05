@@ -12,8 +12,9 @@ import java.awt.*;
  * @since 2026-05-02
  */
 public class UIProgressBar extends UIComponent {
+    private final Vec2i size;
+
     private double progress;
-    private Vec2i size;
 
     private Color forgroundColor;
 

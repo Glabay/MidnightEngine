@@ -12,8 +12,9 @@ import java.awt.*;
  * @since 2026-05-01
  */
 public class UIComponent {
-    protected Vec2i size;
     public Vec2i position;
+
+    protected Vec2i size;
     protected Vec2i offset;
     protected UIPanel panel;
 
