@@ -30,7 +30,7 @@ public class PlayerAvatar extends Mob {
         width = 32;
         height = 32;
 
-        texture = TextureFactory.createSolidColor(32, 32, Color.RED);
+        texture = TextureFactory.createSolidColor(width, height, Color.RED);
     }
 
     public int getMoveX() {
