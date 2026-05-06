@@ -20,7 +20,8 @@ public class Engine {
         var gameWindow = new GameWindow("Midnight Engine",
             WindowConfig.getWindowWidth(),
             WindowConfig.getWindowHeight(),
-            inputManager
+            inputManager,
+            mouseManager
         );
         var renderer = new Java2DRenderer(gameWindow.getCanvas());
 

@@ -57,6 +57,7 @@ public class GameLoop implements Runnable {
             if (delta >= 1) {
                 game.update(delta);
                 inputManager.update();
+                mouseManager.update();
                 renderer.begin();
                 game.render(renderer);
                 renderer.end();

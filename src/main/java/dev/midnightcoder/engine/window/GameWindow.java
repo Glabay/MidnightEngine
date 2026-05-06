@@ -18,9 +18,9 @@ public class GameWindow extends Canvas {
     private final AWTKeyboardInputManager inputManager;
     private final AWTMouseInputHandler mouseManager;
 
-    public GameWindow(String title, int width, int height, AWTKeyboardInputManager inputManager) {
+    public GameWindow(String title, int width, int height, AWTKeyboardInputManager inputManager, AWTMouseInputHandler mouseManager) {
         this.inputManager = inputManager;
-        this.mouseManager = new AWTMouseInputHandler();
+        this.mouseManager = mouseManager;
 
         setPreferredSize(new Dimension(width, height));
         setIgnoreRepaint(true);

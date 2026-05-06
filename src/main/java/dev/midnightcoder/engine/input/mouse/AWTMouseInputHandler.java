@@ -11,9 +11,9 @@ import java.awt.event.MouseMotionListener;
  * @since 2026-05-01
  */
 public class AWTMouseInputHandler implements MouseInputManager, MouseMotionListener, MouseListener {
-    protected int mouseX = -1;
-    protected int mouseY = -1;
-    protected int mouseB = MouseEvent.NOBUTTON;
+    protected volatile int mouseX = -1;
+    protected volatile int mouseY = -1;
+    protected volatile int mouseB = MouseEvent.NOBUTTON;
 
     public int getButton() {
         return mouseB;
@@ -38,10 +38,14 @@ public class AWTMouseInputHandler implements MouseInputManager, MouseMotionListe
     public void mouseClicked(MouseEvent e) {}
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+        mouseB = e.getButton();
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+        mouseB = MouseEvent.NOBUTTON;
+    }
 
     @Override
     public void mouseEntered(MouseEvent e) {}
@@ -50,8 +54,14 @@ public class AWTMouseInputHandler implements MouseInputManager, MouseMotionListe
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseDragged(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
 
     @Override
-    public void mouseMoved(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
 }
