@@ -2,13 +2,15 @@ package dev.midnightcoder.engine.world.tile;
 
 import dev.midnightcoder.engine.renderer.graphics.Texture;
 
+import java.awt.*;
+
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightRPG
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public class TileType {
+public abstract class TileType {
     private final String id;
     private final Texture texture;
     private final int collisionFlags;
@@ -18,6 +20,8 @@ public class TileType {
         this.texture = texture;
         this.collisionFlags = collisionFlags;
     }
+
+    public abstract Rectangle getHitbox(int x, int y);
 
     public String getId() {
         return id;
