@@ -1,5 +1,6 @@
 package dev.midnightcoder.engine.renderer.ui.components;
 
+import dev.midnightcoder.engine.entity.item.GameItem;
 import dev.midnightcoder.engine.entity.mob.PlayerAvatar;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.util.Vec2i;
@@ -22,9 +23,12 @@ public class UIPanel extends UIComponent {
 
     protected BufferedImage background;
 
-    protected boolean visible;
-
     protected PlayerAvatar player;
+
+    protected GameItem item;
+
+    protected boolean visible;
+    protected boolean mousePressed;
 
     public UIPanel(Vec2i position, Vec2i size) {
         super(position);
@@ -48,7 +52,7 @@ public class UIPanel extends UIComponent {
 
     public void render(Renderer renderer) {
         if (visible) {
-            renderer.setColor(color );
+            renderer.setColor(color);
             renderer.getGraphics2D().fillRect(position.x, position.y, size.x, size.y);
             for (UIComponent components : children) {
                 components.render(renderer);
@@ -61,4 +65,19 @@ public class UIPanel extends UIComponent {
         return this;
     }
 
+    public void setSelectedItem(GameItem item) {
+        this.item = item;
+    }
+
+    public void setMousePressed(boolean mousePressed) {
+        this.mousePressed = mousePressed;
+    }
+
+    public boolean isMousePressed() {
+        return mousePressed;
+    }
+
+    public GameItem getSelectedGameItem() {
+        return item;
+    }
 }
