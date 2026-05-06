@@ -25,6 +25,8 @@ public class Mob extends Entity {
     }
 
     @Override
-    public void update(double delta) {}
+    public void update(double delta) {
+        updateHitbox();
+    }
 
 }

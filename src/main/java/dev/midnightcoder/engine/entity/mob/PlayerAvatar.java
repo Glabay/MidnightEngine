@@ -59,6 +59,7 @@ public class PlayerAvatar extends Mob {
      */
     @Override
     public void update(double delta) {
+        super.update(delta);
         // running
         if (input.isKeyHeld(KeyEvent.VK_SHIFT))
             speed = 4;

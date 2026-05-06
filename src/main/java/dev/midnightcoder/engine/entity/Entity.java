@@ -3,6 +3,8 @@ package dev.midnightcoder.engine.entity;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.graphics.Texture;
 
+import java.awt.*;
+
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightRPG
@@ -16,11 +18,14 @@ public abstract class Entity {
     protected int width;
     protected int height;
 
+    protected Hitbox hitbox;
+
     protected Texture texture;
 
     public Entity(int x, int y) {
         this.x = x;
         this.y = y;
+        this.hitbox = new Hitbox(x, y, width, height);
     }
 
     public abstract void update(double delta);
@@ -57,5 +62,21 @@ public abstract class Entity {
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public void setHitboxDimension(int width, int height) {
+        hitbox.setHitboxDimension(width, height);
+    }
+
+    public void updateHitbox() {
+        hitbox.updateHitbox(x, y);
     }
 }
