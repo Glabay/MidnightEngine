@@ -70,7 +70,6 @@ public class Java2DRenderer implements Renderer {
 
     @Override
     public void renderText(String text, int x, int y) {
-        getGraphics2D().setColor(Color.YELLOW);
         getGraphics2D().drawString(text, x, y);
     }
 
