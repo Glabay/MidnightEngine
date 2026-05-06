@@ -11,10 +11,11 @@ import java.util.Arrays;
 public enum CollisionFlag {
     NONE(0),
 
-    NORTH(1 << 0),
-    SOUTH(1 << 1),
-    EAST (1 << 2),
-    WEST (1 << 3),
+    PROGRAMMATIC(1),
+    NORTH(1 << 1),
+    SOUTH(1 << 2),
+    EAST (1 << 3),
+    WEST (1 << 4),
 
     FULL(NORTH.mask | SOUTH.mask | EAST.mask | WEST.mask)
     ;
