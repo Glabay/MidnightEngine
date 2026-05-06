@@ -2,6 +2,7 @@ package dev.midnightcoder.engine.renderer.java2d;
 
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.graphics.Texture;
+import dev.midnightcoder.engine.util.Vec2i;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -46,6 +47,12 @@ public class Java2DRenderer implements Renderer {
     public void update() {}
 
     @Override
+    public void drawRectangle(Vec2i position, int size, int size1, Color color) {
+        getGraphics2D().setColor(color);
+        getGraphics2D().drawRect(position.x, position.y, size, size1);
+    }
+
+    @Override
     public void renderTexture(Texture texture, int x, int y) {
         renderImage(texture.image(), x, y);
     }
@@ -54,6 +61,11 @@ public class Java2DRenderer implements Renderer {
     public void renderImage(Image image, int x, int y) {
         getGraphics2D().drawImage(image, x, y, null);
 
+    }
+
+    @Override
+    public void renderImage(Image image, int x, int y, int width, int height) {
+        getGraphics2D().drawImage(image, x, y, width, height, null);
     }
 
     @Override
