@@ -23,8 +23,6 @@ public class UIPanel extends UIComponent {
 
     protected BufferedImage background;
 
-    protected PlayerAvatar player;
-
     protected GameItem item;
 
     protected boolean visible;
