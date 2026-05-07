@@ -1,8 +1,7 @@
 package dev.midnightcoder.engine.system;
 
-import dev.midnightcoder.engine.entity.Entity;
+import dev.midnightcoder.engine.entity.mob.Mob;
 import dev.midnightcoder.engine.world.TileMap;
-import dev.midnightcoder.engine.world.tile.CollisionFlag;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -17,6 +16,6 @@ public abstract class Movement {
         this.tileMap = tileMap;
     }
 
-    public abstract void move(Entity mob, int dx, int dy);
+    public abstract void move(Mob mob, int dx, int dy);
 
 }
