@@ -34,8 +34,11 @@ public class Mob extends Entity {
 
     @Override
     public void render(Renderer renderer) {
-        if (texture != null)
-            renderer.renderTexture(texture, x, y);
+        if (texture != null) {
+            var screenX = (int) (x - currentMap.getCamera().getX());
+            var screenY = (int) (y - currentMap.getCamera().getY());
+            renderer.renderTexture(texture, screenX, screenY);
+        }
     }
 
     @Override
