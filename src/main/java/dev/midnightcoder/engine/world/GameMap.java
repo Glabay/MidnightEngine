@@ -4,6 +4,8 @@ import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.camera.Camera2D;
 import dev.midnightcoder.engine.world.tile.Tile;
 
+import java.util.List;
+
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightRPG
@@ -38,6 +40,8 @@ public abstract class GameMap {
             }
         }
     }
+
+    public abstract List<?> getEntities();
 
     public TileMap getTileMap() {
         return tileMap;
