@@ -1,9 +1,11 @@
 package dev.midnightcoder.engine.entity.mob;
 
+import dev.midnightcoder.engine.entity.Direction;
 import dev.midnightcoder.engine.entity.Entity;
 import dev.midnightcoder.engine.entity.Hitbox;
 import dev.midnightcoder.engine.renderer.Renderer;
-import dev.midnightcoder.engine.renderer.graphics.Texture;
+import dev.midnightcoder.engine.system.Movement;
+import dev.midnightcoder.engine.world.GameMap;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -13,14 +15,20 @@ import dev.midnightcoder.engine.renderer.graphics.Texture;
  */
 public class Mob extends Entity {
     protected final int moveSpeed = 1;
+    protected final Movement movement;
+    protected final GameMap currentMap;
 
     protected int x;
     protected int y;
     protected int speed = 3;
 
-    public Mob(int x, int y) {
+    protected Direction direction = Direction.SOUTH;
+
+    public Mob(int x, int y, Movement movement, GameMap currentMap) {
         this.x = x;
         this.y = y;
+        this.movement = movement;
+        this.currentMap = currentMap;
         this.hitbox = new Hitbox(x, y, width, height);
     }
 

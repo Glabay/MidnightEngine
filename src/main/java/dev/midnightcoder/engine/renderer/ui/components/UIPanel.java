@@ -1,11 +1,9 @@
 package dev.midnightcoder.engine.renderer.ui.components;
 
 import dev.midnightcoder.engine.entity.item.GameItem;
-import dev.midnightcoder.engine.entity.mob.PlayerAvatar;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.util.Vec2i;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
