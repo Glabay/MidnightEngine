@@ -1,5 +1,6 @@
 package dev.midnightcoder.cache.editors;
 
+import dev.midnightcoder.cache.EditorSettings;
 import dev.midnightcoder.cache.model.Sprite;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -60,14 +61,11 @@ public class SpriteEditor implements Editor {
             var fileChooser = new FileChooser();
             fileChooser.setTitle("Select Sprite PNG");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Files", "*.png"));
-
-            var currentDir = System.getProperty("user.dir");
-            var initialDir = new File(currentDir);
-            if (initialDir.exists())
-                fileChooser.setInitialDirectory(initialDir);
+            fileChooser.setInitialDirectory(EditorSettings.getLastOpenedDirectory());
 
             var selectedFile = fileChooser.showOpenDialog(root.getScene().getWindow());
             if (selectedFile != null) {
+                EditorSettings.setLastOpenedDirectory(selectedFile.getParentFile());
                 try {
                     byte[] data = Files.readAllBytes(selectedFile.toPath());
                     var tempImg = new Image(new ByteArrayInputStream(data));
