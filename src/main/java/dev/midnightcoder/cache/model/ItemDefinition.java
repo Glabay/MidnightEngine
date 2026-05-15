@@ -33,10 +33,10 @@ public class ItemDefinition implements Serializable {
     private int defMelee;
     private int defRanged;
     private int defMagic;
-    private int atkSpeed;
+    private int atkSpeed = 4;
 
     private int value;
-    private boolean tradeable;
+    private boolean tradeable = true;
 
     public ItemDefinition(int id) {
         this.id = id;
