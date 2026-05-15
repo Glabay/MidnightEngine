@@ -72,7 +72,9 @@ public class SpritePicker extends Stage {
 
         refreshGrid();
 
-        setScene(new Scene(root, 600, 500));
+        var scene = new Scene(root, 600, 500);
+        dev.midnightcoder.cache.EditorSettings.applyTheme(scene);
+        setScene(scene);
     }
 
     private void refreshGrid() {
@@ -88,9 +90,9 @@ public class SpritePicker extends Stage {
             var spriteBox = new VBox(5);
                 spriteBox.setAlignment(Pos.CENTER);
                 spriteBox.setPadding(new Insets(5));
-                spriteBox.setStyle("-fx-border-color: #cccccc; -fx-cursor: hand;");
+                spriteBox.getStyleClass().add("picker-box");
             if (selectedSpriteId != null && selectedSpriteId == spriteId)
-                spriteBox.setStyle("-fx-border-color: #0078d7; -fx-border-width: 2px; -fx-background-color: #e5f1fb; -fx-cursor: hand;");
+                spriteBox.getStyleClass().add("picker-box-selected");
 
             var iv = new ImageView();
                 iv.setFitWidth(64);

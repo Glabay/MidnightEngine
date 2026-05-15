@@ -72,7 +72,9 @@ public class TexturePicker extends Stage {
 
         refreshGrid();
 
-        setScene(new Scene(root, 600, 500));
+        var scene = new Scene(root, 600, 500);
+        dev.midnightcoder.cache.EditorSettings.applyTheme(scene);
+        setScene(scene);
     }
 
     private void refreshGrid() {
@@ -88,9 +90,9 @@ public class TexturePicker extends Stage {
             var box = new VBox(5);
                 box.setAlignment(Pos.CENTER);
                 box.setPadding(new Insets(5));
-                box.setStyle("-fx-border-color: #cccccc; -fx-cursor: hand;");
+                box.getStyleClass().add("picker-box");
             if (selectedId != null && selectedId == id)
-                box.setStyle("-fx-border-color: #0078d7; -fx-border-width: 2px; -fx-background-color: #e5f1fb; -fx-cursor: hand;");
+                box.getStyleClass().add("picker-box-selected");
 
 
             // Visual representation: either the sprite or the color

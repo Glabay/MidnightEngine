@@ -49,7 +49,9 @@ public class SpriteSheetFramePicker extends Stage {
         var root = new VBox(scrollPane);
             root.setAlignment(Pos.CENTER);
 
-        setScene(new Scene(root, 650, 550));
+        var scene = new Scene(root, 650, 550);
+        dev.midnightcoder.cache.EditorSettings.applyTheme(scene);
+        setScene(scene);
     }
 
     private void refreshGrid() {
@@ -86,9 +88,9 @@ public class SpriteSheetFramePicker extends Stage {
                     var box = new VBox(5);
                         box.setAlignment(Pos.CENTER);
                         box.setPadding(new Insets(5));
-                        box.setStyle("-fx-border-color: #cccccc; -fx-cursor: hand;");
+                        box.getStyleClass().add("picker-box");
                     if (selectedFrame != null && selectedFrame == frameIndex)
-                        box.setStyle("-fx-border-color: #0078d7; -fx-border-width: 2px; -fx-background-color: #e5f1fb; -fx-cursor: hand;");
+                        box.getStyleClass().add("picker-box-selected");
 
                     var frameView = new ImageView(fullImage);
                         frameView.setViewport(new Rectangle2D(c * fw, r * fh, fw, fh));

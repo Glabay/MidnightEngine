@@ -98,7 +98,9 @@ public class Main extends Application {
             root.setCenter(splitPane);
             root.setTop(menuBar);
 
-        primaryStage.setScene(new Scene(root, 1200, 800));
+        var scene = new Scene(root, 1200, 800);
+        EditorSettings.applyTheme(scene);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

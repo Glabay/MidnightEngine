@@ -1,0 +1,84 @@
+.root {
+    -fx-base: #2b2b2b;
+    -fx-background: #3c3f41;
+    -fx-control-inner-background: #3c3f41;
+    -fx-control-inner-background-alt: derive(-fx-control-inner-background, -10%);
+    -fx-accent: #4b6eaf;
+    -fx-focus-color: #4b6eaf;
+    -fx-faint-focus-color: #4b6eaf33;
+    -fx-text-base-color: #bbbbbb;
+    -fx-text-inner-color: -fx-text-base-color;
+    -fx-selection-bar: #2f65ca;
+    -fx-selection-bar-non-focused: #3e434c;
+}
+
+.label {
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.text-field, .text-area {
+    -fx-prompt-text-fill: derive(-fx-control-inner-background, +50%);
+}
+
+.tree-cell {
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.tree-cell:selected {
+    -fx-text-fill: white;
+}
+
+.menu-bar {
+    -fx-background-color: derive(-fx-base, -20%);
+}
+
+.menu-item .label {
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.button {
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.titled-pane > .title {
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.check-box {
+    -fx-text-fill: -fx-text-base-color;
+}
+
+/* ScrollBar styling */
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: derive(-fx-base, -10%);
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: derive(-fx-base, 20%);
+    -fx-background-radius: 2em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: derive(-fx-base, 30%);
+}
+
+.picker-box {
+    -fx-border-color: #444444;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.picker-box:hover {
+    -fx-background-color: derive(-fx-base, 10%);
+}
+
+.picker-box-selected {
+    -fx-border-color: -fx-accent;
+    -fx-border-width: 2px;
+    -fx-background-color: derive(-fx-accent, -70%);
+}
