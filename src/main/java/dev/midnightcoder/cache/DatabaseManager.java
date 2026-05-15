@@ -90,6 +90,13 @@ public class DatabaseManager {
                 "id TEXT PRIMARY KEY," +
                 "file_name TEXT," +
                 "png_data BLOB)");
+
+            stmt.execute("CREATE TABLE IF NOT EXISTS audio (" +
+                "id INTEGER PRIMARY KEY," +
+                "name TEXT," +
+                "data BLOB," +
+                "compressed_size INTEGER," +
+                "duration REAL)");
         }
     }
 
@@ -399,6 +406,47 @@ public class DatabaseManager {
                     pstmt.setString(1, def.getId().toString());
                     pstmt.setString(2, def.getFileName());
                     pstmt.setBytes(3, def.getPngData());
+                    pstmt.addBatch();
+                }
+                pstmt.executeBatch();
+                conn.commit();
+            }
+            catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        }
+    }
+
+    // Audio
+    public List<AudioDefinition> loadAudio() throws SQLException {
+        var list = new ArrayList<AudioDefinition>();
+        try (var conn = getConnection();
+             var stmt = conn.createStatement();
+             var rs = stmt.executeQuery("SELECT * FROM audio ORDER BY id")) {
+            while (rs.next()) {
+                list.add(new AudioDefinition(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getBytes("data"),
+                    rs.getLong("compressed_size"),
+                    rs.getDouble("duration")
+                ));
+            }
+        }
+        return list;
+    }
+
+    public void saveAudio(List<AudioDefinition> audio) throws SQLException {
+        try (var conn = getConnection()) {
+            conn.setAutoCommit(false);
+            try (var pstmt = conn.prepareStatement("INSERT OR REPLACE INTO audio (id, name, data, compressed_size, duration) VALUES (?, ?, ?, ?, ?)")) {
+                for (var def : audio) {
+                    pstmt.setInt(1, def.getId());
+                    pstmt.setString(2, def.getName());
+                    pstmt.setBytes(3, def.getData());
+                    pstmt.setLong(4, def.getCompressedSize());
+                    pstmt.setDouble(5, def.getDuration());
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();

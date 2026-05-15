@@ -4,13 +4,14 @@ import dev.midnightcoder.cache.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 public class CacheManager {
     private static final Logger log = LoggerFactory.getLogger(CacheManager.class);
@@ -21,6 +22,7 @@ public class CacheManager {
     private final List<NPCDefinition> npcs = new ArrayList<>();
     private final List<ObjectDefinition> objects = new ArrayList<>();
     private final List<MapDefinition> maps = new ArrayList<>();
+    private final List<AudioDefinition> audio = new ArrayList<>();
 
     private static final String CACHE_DIR = "midnight_cache";
     private final DatabaseManager databaseManager;
@@ -45,7 +47,7 @@ public class CacheManager {
 
     private boolean isEmpty() {
         return sprites.isEmpty() && spriteSheets.isEmpty() && textures.isEmpty() &&
-                items.isEmpty() && npcs.isEmpty() && objects.isEmpty() && maps.isEmpty();
+                items.isEmpty() && npcs.isEmpty() && objects.isEmpty() && maps.isEmpty() && audio.isEmpty();
     }
 
     private void loadLegacy() {
@@ -64,6 +66,8 @@ public class CacheManager {
             objects.addAll(loadIndex("objects.dat"));
             maps.clear();
             maps.addAll(loadIndex("maps.dat"));
+            audio.clear();
+            audio.addAll(loadIndex("audio.dat"));
         }
         catch (Exception e) {
             log.error("Error loading legacy cache: {}", e.getMessage());
@@ -86,6 +90,8 @@ public class CacheManager {
             objects.addAll(databaseManager.loadObjects());
             maps.clear();
             maps.addAll(databaseManager.loadMaps());
+            audio.clear();
+            audio.addAll(databaseManager.loadAudio());
             log.info("Cache loaded from SQLite database.");
         } catch (SQLException e) {
             log.error("Error loading cache from SQLite: {}", e.getMessage());
@@ -101,6 +107,7 @@ public class CacheManager {
             databaseManager.saveNpcs(npcs);
             databaseManager.saveObjects(objects);
             databaseManager.saveMaps(maps);
+            databaseManager.saveAudio(audio);
         } catch (SQLException e) {
             log.error("Error exporting cache to SQLite: {}", e.getMessage());
         }
@@ -231,6 +238,21 @@ public class CacheManager {
                 maps.set(i, new MapDefinition(id, pngData));
                 return;
             }
+        }
+    }
+
+    // Audio
+    public List<AudioDefinition> getAudio() {
+        return audio;
+    }
+
+    public void addAudio(String name, byte[] data, long compressedSize, double duration) {
+        audio.add(new AudioDefinition(audio.size(), name, data, compressedSize, duration));
+    }
+
+    public void replaceAudio(int id, AudioDefinition def) {
+        if (id >= 0 && id < audio.size()) {
+            audio.set(id, def);
         }
     }
 }

@@ -29,18 +29,18 @@ public class Main extends Application {
                 if (empty || item == null) {
                     setText(null);
                     setContextMenu(null);
-                } else {
+                }
+                else {
                     setText(item);
                     var treeItem = getTreeItem();
                     if (treeItem != null && treeItem.getParent() != null && treeItem.getParent().getValue().equals("MidnightCache")) {
                         var menu = new ContextMenu();
                         var addEntry = new MenuItem("Add New " + item.replace("_index", ""));
-                        addEntry.setOnAction(_ -> addNewEntry(item));
+                            addEntry.setOnAction(_ -> addNewEntry(item));
                         menu.getItems().add(addEntry);
                         setContextMenu(menu);
-                    } else {
-                        setContextMenu(null);
                     }
+                    else setContextMenu(null);
                 }
             }
         });
@@ -48,9 +48,7 @@ public class Main extends Application {
         
         treeView.getSelectionModel().selectedItemProperty()
             .addListener((_, _, newVal) -> {
-                if (newVal != null) {
-                    handleSelection(newVal);
-                }
+                if (newVal != null) handleSelection(newVal);
             });
         
         editorContainer = new BorderPane();
@@ -82,8 +80,11 @@ public class Main extends Application {
         var addSpriteSheet = new MenuItem("SpriteSheet");
             addSpriteSheet.setOnAction(_ -> addNewEntry("spritesheet_index"));
 
+        var addAudio = new MenuItem("Audio");
+            addAudio.setOnAction(_ -> addNewEntry("audio_index"));
+
         var addMenu = new Menu("Add New");
-            addMenu.getItems().addAll(addSprite, addSpriteSheet, addTexture, addItem, addNpc, addObject, addMap);
+            addMenu.getItems().addAll(addSprite, addSpriteSheet, addTexture, addItem, addNpc, addObject, addMap, addAudio);
 
         var saveItem = new MenuItem("Save Cache");
             saveItem.setOnAction(_ -> cacheManager.save());
@@ -112,6 +113,7 @@ public class Main extends Application {
             rootItem.getChildren().add(createIndexNode("npc_index", cacheManager.getNpcs().size()));
             rootItem.getChildren().add(createIndexNode("gameobject_index", cacheManager.getObjects().size()));
             rootItem.getChildren().add(createIndexNode("map_index", cacheManager.getMaps().size()));
+            rootItem.getChildren().add(createIndexNode("audio_index", cacheManager.getAudio().size()));
             rootItem.getChildren().add(createIndexNode("sprite_index", cacheManager.getSprites().size()));
             rootItem.getChildren().add(createIndexNode("spritesheet_index", cacheManager.getSpriteSheets().size()));
         treeView.setRoot(rootItem);
@@ -152,6 +154,7 @@ public class Main extends Application {
             case "texture_index" -> showTextureEditor(index);
             case "spritesheet_index" -> showSpriteSheetEditor(index);
             case "map_index" -> showMapEditor(index);
+            case "audio_index" -> showAudioEditor(index);
         }
     }
 
@@ -187,6 +190,7 @@ public class Main extends Application {
             case "texture_index" -> cacheManager.addTexture(-1, "#FFFFFF");
             case "spritesheet_index" -> cacheManager.addSpriteSheet(-1, 1, 1, 32, 32);
             case "map_index" -> addNewMap();
+            case "audio_index" -> cacheManager.addAudio("new_audio", new byte[0], 0, 0);
         }
         refreshTree();
         // Select the newly added item
@@ -225,6 +229,10 @@ public class Main extends Application {
 
     private void showMapEditor(int index) {
         editorContainer.setCenter(new MapEditor(cacheManager.getMaps().get(index)).getView());
+    }
+
+    private void showAudioEditor(int index) {
+        editorContainer.setCenter(new AudioEditor(cacheManager.getAudio().get(index), cacheManager).getView());
     }
 
     private void addNewSprite() {

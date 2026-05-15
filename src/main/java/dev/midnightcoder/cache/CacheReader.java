@@ -57,6 +57,18 @@ public class CacheReader {
                 .findFirst();
     }
 
+    public Optional<AudioDefinition> getAudioDefinition(String name) {
+        return cacheManager.getAudio().stream()
+                .filter(def -> def.getName().equalsIgnoreCase(name))
+                .findFirst();
+    }
+
+    public Optional<AudioDefinition> getAudioDefinition(int id) {
+        return cacheManager.getAudio().stream()
+                .filter(def -> def.getId() == id)
+                .findFirst();
+    }
+
     public Texture getTexture(int spriteId) {
         if (textureCache.containsKey(spriteId)) {
             return textureCache.get(spriteId);
