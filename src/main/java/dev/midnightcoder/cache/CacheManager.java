@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,15 +23,32 @@ public class CacheManager {
     private final List<MapDefinition> maps = new ArrayList<>();
 
     private static final String CACHE_DIR = "midnight_cache";
+    private final DatabaseManager databaseManager;
 
     public CacheManager() {
         var dir = new File(CACHE_DIR);
         if (!dir.exists()) {
             dir.mkdirs();
         }
+        this.databaseManager = new DatabaseManager();
     }
 
     public void load() {
+        loadFromSqlite();
+        if (isEmpty()) {
+            loadLegacy();
+            if (!isEmpty()) {
+                exportToSqlite();
+            }
+        }
+    }
+
+    private boolean isEmpty() {
+        return sprites.isEmpty() && spriteSheets.isEmpty() && textures.isEmpty() &&
+                items.isEmpty() && npcs.isEmpty() && objects.isEmpty() && maps.isEmpty();
+    }
+
+    private void loadLegacy() {
         try {
             sprites.clear();
             sprites.addAll(loadIndex("sprites.dat"));
@@ -48,23 +66,48 @@ public class CacheManager {
             maps.addAll(loadIndex("maps.dat"));
         }
         catch (Exception e) {
-            log.error("Error loading cache: {}", e.getMessage());
+            log.error("Error loading legacy cache: {}", e.getMessage());
+        }
+    }
+
+    private void loadFromSqlite() {
+        try {
+            sprites.clear();
+            sprites.addAll(databaseManager.loadSprites());
+            spriteSheets.clear();
+            spriteSheets.addAll(databaseManager.loadSpriteSheets());
+            textures.clear();
+            textures.addAll(databaseManager.loadTextures());
+            items.clear();
+            items.addAll(databaseManager.loadItems());
+            npcs.clear();
+            npcs.addAll(databaseManager.loadNpcs());
+            objects.clear();
+            objects.addAll(databaseManager.loadObjects());
+            maps.clear();
+            maps.addAll(databaseManager.loadMaps());
+            log.info("Cache loaded from SQLite database.");
+        } catch (SQLException e) {
+            log.error("Error loading cache from SQLite: {}", e.getMessage());
+        }
+    }
+
+    public void exportToSqlite() {
+        try {
+            databaseManager.saveSprites(sprites);
+            databaseManager.saveSpriteSheets(spriteSheets);
+            databaseManager.saveTextures(textures);
+            databaseManager.saveItems(items);
+            databaseManager.saveNpcs(npcs);
+            databaseManager.saveObjects(objects);
+            databaseManager.saveMaps(maps);
+        } catch (SQLException e) {
+            log.error("Error exporting cache to SQLite: {}", e.getMessage());
         }
     }
 
     public void save() {
-        try {
-            saveIndex("sprites.dat", sprites);
-            saveIndex("spritesheets.dat", spriteSheets);
-            saveIndex("textures.dat", textures);
-            saveIndex("items.dat", items);
-            saveIndex("npcs.dat", npcs);
-            saveIndex("objects.dat", objects);
-            saveIndex("maps.dat", maps);
-        }
-        catch (Exception e) {
-            log.error("Error saving cache: {}", e.getMessage());
-        }
+        exportToSqlite();
     }
 
     @SuppressWarnings("unchecked")
@@ -73,13 +116,6 @@ public class CacheManager {
         if (!file.exists()) return new ArrayList<>();
         try (var ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(file)))) {
             return (List<T>) ois.readObject();
-        }
-    }
-
-    private <T> void saveIndex(String filename, List<T> data) throws Exception {
-        var file = new File(CACHE_DIR, filename);
-        try (var oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(file)))) {
-            oos.writeObject(data);
         }
     }
 

@@ -22,6 +22,28 @@ public class Main extends Application {
 
         // TreeView on the left
         treeView = new TreeView<>();
+        treeView.setCellFactory(_ -> new TreeCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setContextMenu(null);
+                } else {
+                    setText(item);
+                    var treeItem = getTreeItem();
+                    if (treeItem != null && treeItem.getParent() != null && treeItem.getParent().getValue().equals("MidnightCache")) {
+                        var menu = new ContextMenu();
+                        var addEntry = new MenuItem("Add New " + item.replace("_index", ""));
+                        addEntry.setOnAction(_ -> addNewEntry(item));
+                        menu.getItems().add(addEntry);
+                        setContextMenu(menu);
+                    } else {
+                        setContextMenu(null);
+                    }
+                }
+            }
+        });
         refreshTree();
         
         treeView.getSelectionModel().selectedItemProperty()
@@ -40,25 +62,25 @@ public class Main extends Application {
 
         // Menu bar for adding items
         var addSprite = new MenuItem("Sprite");
-            addSprite.setOnAction(_ -> addNewSprite());
+            addSprite.setOnAction(_ -> addNewEntry("sprite_index"));
         
         var addItem = new MenuItem("Item");
-            addItem.setOnAction(_ -> { cacheManager.addItem(); refreshTree(); });
+            addItem.setOnAction(_ -> addNewEntry("item_index"));
 
         var addNpc = new MenuItem("NPC");
-            addNpc.setOnAction(_ -> { cacheManager.addNpc(); refreshTree(); });
+            addNpc.setOnAction(_ -> addNewEntry("npc_index"));
 
         var addObject = new MenuItem("GameObject");
-            addObject.setOnAction(_ -> { cacheManager.addObject(); refreshTree(); });
+            addObject.setOnAction(_ -> addNewEntry("gameobject_index"));
 
         var addMap = new MenuItem("Map");
-            addMap.setOnAction(_ -> addNewMap());
+            addMap.setOnAction(_ -> addNewEntry("map_index"));
 
         var addTexture = new MenuItem("Texture");
-            addTexture.setOnAction(_ -> { cacheManager.addTexture(-1, "#FFFFFF"); refreshTree(); });
+            addTexture.setOnAction(_ -> addNewEntry("texture_index"));
         
         var addSpriteSheet = new MenuItem("SpriteSheet");
-            addSpriteSheet.setOnAction(_ -> { cacheManager.addSpriteSheet(-1, 1, 1, 32, 32); refreshTree(); });
+            addSpriteSheet.setOnAction(_ -> addNewEntry("spritesheet_index"));
 
         var addMenu = new Menu("Add New");
             addMenu.getItems().addAll(addSprite, addSpriteSheet, addTexture, addItem, addNpc, addObject, addMap);
@@ -139,23 +161,7 @@ public class Main extends Application {
         
         var addButton = new Button("Add New " + category.replace("_index", ""));
             addButton.setStyle("-fx-font-size: 16px; -fx-padding: 10 20 10 20;");
-            addButton.setOnAction(_ -> {
-                switch (category) {
-                    case "sprite_index": addNewSprite(); break;
-                    case "item_index": cacheManager.addItem(); break;
-                    case "npc_index": cacheManager.addNpc(); break;
-                    case "gameobject_index": cacheManager.addObject(); break;
-                    case "texture_index": cacheManager.addTexture(-1, "#FFFFFF"); break;
-                    case "spritesheet_index": cacheManager.addSpriteSheet(-1, 1, 1, 32, 32); break;
-                    case "map_index": addNewMap(); break;
-                }
-                refreshTree();
-                // Select the newly added item
-                var categoryNode = findCategoryNode(category);
-                if (categoryNode != null && !categoryNode.getChildren().isEmpty()) {
-                    treeView.getSelectionModel().select(categoryNode.getChildren().getLast());
-                }
-            });
+            addButton.setOnAction(_ -> addNewEntry(category));
 
         dash.getChildren().addAll(title, addButton);
         editorContainer.setCenter(dash);
@@ -168,6 +174,27 @@ public class Main extends Application {
                 node.getValue().equals(category))
             .findFirst()
             .orElse(null);
+    }
+
+    private void addNewEntry(String category) {
+        switch (category) {
+            case "sprite_index" -> addNewSprite();
+            case "item_index" -> cacheManager.addItem();
+            case "npc_index" -> cacheManager.addNpc();
+            case "gameobject_index" -> cacheManager.addObject();
+            case "texture_index" -> cacheManager.addTexture(-1, "#FFFFFF");
+            case "spritesheet_index" -> cacheManager.addSpriteSheet(-1, 1, 1, 32, 32);
+            case "map_index" -> addNewMap();
+        }
+        refreshTree();
+        // Select the newly added item
+        var categoryNode = findCategoryNode(category);
+        if (categoryNode != null) {
+            categoryNode.setExpanded(true);
+            if (!categoryNode.getChildren().isEmpty()) {
+                treeView.getSelectionModel().select(categoryNode.getChildren().getLast());
+            }
+        }
     }
 
     private void showSpriteEditor(int index) {
@@ -200,12 +227,10 @@ public class Main extends Application {
 
     private void addNewSprite() {
         cacheManager.addSprite(new byte[0], 0, 0);
-        refreshTree();
     }
     
     private void addNewMap() {
         cacheManager.addMap(new byte[0]);
-        refreshTree();
     }
 
     static void main(String[] args) {

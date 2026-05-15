@@ -9,7 +9,9 @@ module MidnightRPG.MidnightEngine.main {
     requires javafx.fxml;
     requires javafx.graphics;
     requires java.desktop;
+    requires java.sql;
     requires org.slf4j;
+    requires org.xerial.sqlitejdbc;
 
     opens dev.midnightcoder.cache to javafx.fxml;
     exports dev.midnightcoder.cache;
