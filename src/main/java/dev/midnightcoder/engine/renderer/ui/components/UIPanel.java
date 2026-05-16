@@ -61,6 +61,10 @@ public class UIPanel extends UIComponent {
         return this;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
     public void setSelectedItem(GameItem item) {
         this.item = item;
     }
