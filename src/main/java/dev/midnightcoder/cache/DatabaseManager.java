@@ -67,8 +67,14 @@ public class DatabaseManager {
                 "atk_speed INTEGER," +
                 "value INTEGER," +
                 "tradeable INTEGER," +
+                "equippable INTEGER," +
+                "equip_slot INTEGER," +
                 "backpack_actions TEXT," +
                 "ground_actions TEXT)");
+
+            // Migrations
+            try { stmt.execute("ALTER TABLE items ADD COLUMN equippable INTEGER DEFAULT 0"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE items ADD COLUMN equip_slot INTEGER DEFAULT 0"); } catch (SQLException ignored) {}
 
             stmt.execute("CREATE TABLE IF NOT EXISTS npcs (" +
                 "id INTEGER PRIMARY KEY," +
@@ -241,6 +247,8 @@ public class DatabaseManager {
                     def.setAtkSpeed(rs.getInt("atk_speed"));
                     def.setValue(rs.getInt("value"));
                     def.setTradeable(rs.getInt("tradeable") == 1);
+                    def.setEquippable(rs.getInt("equippable") == 1);
+                    def.setEquipSlot(rs.getInt("equip_slot"));
 
                 String bpActionsStr = rs.getString("backpack_actions");
                 if (bpActionsStr != null) {
@@ -263,7 +271,7 @@ public class DatabaseManager {
     public void saveItems(List<ItemDefinition> items) throws SQLException {
         try (var conn = getConnection()) {
             conn.setAutoCommit(false);
-            try (var pstmt = conn.prepareStatement("INSERT OR REPLACE INTO items (id, name, description, sprite_id, off_accuracy, off_melee, off_ranged, off_magic, def_melee, def_ranged, def_magic, atk_speed, value, tradeable, backpack_actions, ground_actions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+            try (var pstmt = conn.prepareStatement("INSERT OR REPLACE INTO items (id, name, description, sprite_id, off_accuracy, off_melee, off_ranged, off_magic, def_melee, def_ranged, def_magic, atk_speed, value, tradeable, equippable, equip_slot, backpack_actions, ground_actions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                 for (ItemDefinition def : items) {
                     pstmt.setInt(1, def.getId());
                     pstmt.setString(2, def.getName());
@@ -279,8 +287,10 @@ public class DatabaseManager {
                     pstmt.setInt(12, def.getAtkSpeed());
                     pstmt.setInt(13, def.getValue());
                     pstmt.setInt(14, def.isTradeable() ? 1 : 0);
-                    pstmt.setString(15, String.join("|", def.getBackpackActions()));
-                    pstmt.setString(16, String.join("|", def.getGroundActions()));
+                    pstmt.setInt(15, def.isEquippable() ? 1 : 0);
+                    pstmt.setInt(16, def.getEquipSlot());
+                    pstmt.setString(17, String.join("|", def.getBackpackActions()));
+                    pstmt.setString(18, String.join("|", def.getGroundActions()));
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();
