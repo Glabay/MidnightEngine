@@ -29,7 +29,10 @@ public abstract class Audio {
     public abstract void stop();
 
     public void mute() {
-        setVolume(0.0f);
+        if (volume == 0.0f)
+            setVolume(0.5f);
+        else
+            setVolume(0.0f);
     }
 
     public void setVolume(float volume) {
