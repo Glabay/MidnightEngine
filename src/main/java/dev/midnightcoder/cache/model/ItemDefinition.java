@@ -36,7 +36,9 @@ public class ItemDefinition implements Serializable {
     private int atkSpeed = 4;
 
     private int value;
+    private int equipSlot;
     private boolean tradeable = true;
+    private boolean equippable = false;
 
     public ItemDefinition(int id) {
         this.id = id;
@@ -156,5 +158,21 @@ public class ItemDefinition implements Serializable {
 
     public void setTradeable(boolean tradeable) {
         this.tradeable = tradeable;
+    }
+
+    public void setEquippable(boolean equippable) {
+        this.equippable = equippable;
+    }
+
+    public void setEquipSlot(int equipSlot) {
+        this.equipSlot = equipSlot;
+    }
+
+    public int getEquipSlot() {
+        return equipSlot;
+    }
+
+    public boolean isEquippable() {
+        return equippable;
     }
 }

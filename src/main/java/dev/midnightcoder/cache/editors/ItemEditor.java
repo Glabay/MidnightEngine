@@ -78,6 +78,12 @@ public class ItemEditor implements Editor {
 
         leftBox.getChildren().add(tradeableBox);
 
+        var equippableBox = new CheckBox("Equippable");
+            equippableBox.setSelected(def.isEquippable());
+            equippableBox.selectedProperty().addListener((_, _, newVal) -> def.setEquippable(newVal));
+
+        leftBox.getChildren().add(equippableBox);
+
         // Backpack Actions
         leftBox.getChildren().add(new Label("Backpack Actions (max 5)"));
         for (int i = 0; i < 5; i++) {
@@ -133,17 +139,19 @@ public class ItemEditor implements Editor {
         grid.setPadding(new Insets(5));
 
         grid.add(new Label("Offensive"), 0, 0);
-        grid.add(createIntField("Accuracy", def.getOffAccuracy(), def::setOffAccuracy), 0, 1);
-        grid.add(createIntField("Melee", def.getOffMelee(), def::setOffMelee), 0, 2);
-        grid.add(createIntField("Ranged", def.getOffRanged(), def::setOffRanged), 0, 3);
-        grid.add(createIntField("Magic", def.getOffMagic(), def::setOffMagic), 0, 4);
+        grid.add(createIntField("Melee", def.getOffMelee(), def::setOffMelee), 0, 1);
+        grid.add(createIntField("Ranged", def.getOffRanged(), def::setOffRanged), 0, 2);
+        grid.add(createIntField("Magic", def.getOffMagic(), def::setOffMagic), 0, 3);
 
         grid.add(new Label("Defensive"), 1, 0);
         grid.add(createIntField("Melee", def.getDefMelee(), def::setDefMelee), 1, 1);
         grid.add(createIntField("Ranged", def.getDefRanged(), def::setDefRanged), 1, 2);
         grid.add(createIntField("Magic", def.getDefMagic(), def::setDefMagic), 1, 3);
-        grid.add(createIntField("Atk Speed", def.getAtkSpeed(), def::setAtkSpeed), 1, 4);
 
+        grid.add(new Label("Combat"), 0, 5);
+        grid.add(createIntField("Accuracy", def.getOffAccuracy(), def::setOffAccuracy), 0, 6);
+        grid.add(createIntField("Atk Speed", def.getAtkSpeed(), def::setAtkSpeed), 0, 7);
+        grid.add(createIntField("Equip slot", def.getEquipSlot(), def::setEquipSlot), 1, 6);
         return grid;
     }
 
