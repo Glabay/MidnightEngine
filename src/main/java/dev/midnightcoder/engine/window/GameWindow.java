@@ -41,6 +41,7 @@ public class GameWindow extends Canvas {
         addKeyListener(inputManager);
         addMouseListener(mouseManager);
         addMouseMotionListener(mouseManager);
+        addMouseWheelListener(mouseManager);
     }
 
     public Canvas getCanvas() {

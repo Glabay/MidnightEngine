@@ -1,8 +1,7 @@
 package dev.midnightcoder.engine.input.mouse;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -10,10 +9,11 @@ import java.awt.event.MouseMotionListener;
  * @social Discord: Glabay
  * @since 2026-05-01
  */
-public class AWTMouseInputHandler implements MouseInputManager, MouseMotionListener, MouseListener {
+public class AWTMouseInputHandler implements MouseInputManager, MouseMotionListener, MouseWheelListener, MouseListener {
     protected volatile int mouseX = -1;
     protected volatile int mouseY = -1;
     protected volatile int mouseB = MouseEvent.NOBUTTON;
+    protected volatile AtomicInteger wheelRotation = new AtomicInteger(0);
 
     public int getButton() {
         return mouseB;
@@ -29,6 +29,16 @@ public class AWTMouseInputHandler implements MouseInputManager, MouseMotionListe
     @Override
     public boolean isButtonPressed(int button) {
         return mouseB == button;
+    }
+
+    @Override
+    public int getWheelRotation() {
+        return wheelRotation.get();
+    }
+
+    @Override
+    public int consumeWheelRotation() {
+        return wheelRotation.getAndSet(0);
     }
 
     @Override
@@ -61,6 +71,13 @@ public class AWTMouseInputHandler implements MouseInputManager, MouseMotionListe
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        wheelRotation.set(wheelRotation.get() + e.getWheelRotation());
         mouseX = e.getX();
         mouseY = e.getY();
     }

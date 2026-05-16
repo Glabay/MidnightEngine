@@ -12,5 +12,8 @@ public interface MouseInputManager {
 
     boolean isButtonPressed(int button);
 
+    int getWheelRotation();
+    int consumeWheelRotation();
+
     void update();
 }
