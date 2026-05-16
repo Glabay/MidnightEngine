@@ -76,4 +76,20 @@ public class UIPanel extends UIComponent {
     public GameItem getSelectedGameItem() {
         return item;
     }
+
+    public Vec2i getSize() {
+        return size;
+    }
+
+    protected int getTextWidth(Renderer renderer, String text) {
+        var graphics = renderer.getGraphics2D();
+        var fontMetrics = graphics.getFontMetrics();
+        return fontMetrics.stringWidth(text);
+    }
+
+    public int getTextCentered(Renderer renderer, String text) {
+        var textWidth = getTextWidth(renderer, text);
+
+        return position.getX() + (size.getWidth() - textWidth) / 2;
+    }
 }
