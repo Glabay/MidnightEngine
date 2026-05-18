@@ -1,7 +1,6 @@
 package dev.midnightcoder.engine.renderer.graphics;
 
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 
 /**
  * @author Glabay | Glabay-Studios

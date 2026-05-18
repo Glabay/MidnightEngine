@@ -3,8 +3,6 @@ package dev.midnightcoder.engine.entity;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.graphics.Texture;
 
-import java.awt.*;
-
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightRPG

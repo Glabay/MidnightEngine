@@ -1,7 +1,6 @@
 package dev.midnightcoder.engine.entity.item;
 
 import dev.midnightcoder.engine.entity.Entity;
-import dev.midnightcoder.engine.renderer.graphics.Texture;
 
 /**
  * @author Glabay | Glabay-Studios

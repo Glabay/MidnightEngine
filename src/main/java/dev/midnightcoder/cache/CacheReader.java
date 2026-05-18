@@ -1,6 +1,9 @@
 package dev.midnightcoder.cache;
 
-import dev.midnightcoder.cache.model.*;
+import dev.midnightcoder.cache.model.AudioDefinition;
+import dev.midnightcoder.cache.model.ItemDefinition;
+import dev.midnightcoder.cache.model.NPCDefinition;
+import dev.midnightcoder.cache.model.ObjectDefinition;
 import dev.midnightcoder.engine.renderer.graphics.Texture;
 
 import javax.imageio.ImageIO;
