@@ -1,6 +1,7 @@
 package dev.midnightcoder.engine.renderer.graphics;
 
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -8,14 +9,26 @@ import java.awt.image.BufferedImage;
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public record Texture(
-    BufferedImage image
-) {
+public final class Texture {
+    private BufferedImage image;
+
+    public Texture(BufferedImage image) {
+        this.image = image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
     public int getWidth() {
         return image.getWidth();
     }
 
     public int getHeight() {
         return image.getHeight();
+    }
+
+    public BufferedImage image() {
+        return image;
     }
 }

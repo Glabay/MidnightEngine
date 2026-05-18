@@ -1,9 +1,15 @@
 package dev.midnightcoder.cache.model;
 
+import dev.midnightcoder.engine.entity.Direction;
+
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class NPCDefinition implements Serializable {
     private final int id;
+    protected final Map<Direction, BufferedImage[]> animatedFrames = new EnumMap<>(Direction.class);
 
     private final String[] actions = {
         "",
@@ -22,6 +28,14 @@ public class NPCDefinition implements Serializable {
 
     public NPCDefinition(int id) {
         this.id = id;
+    }
+
+    public void setAnimatedFrames(Direction direction, BufferedImage[] frames) {
+        animatedFrames.put(direction, frames);
+    }
+
+    public BufferedImage[] getAnimatedFrames(Direction direction) {
+        return animatedFrames.get(direction);
     }
 
     public int getId() {

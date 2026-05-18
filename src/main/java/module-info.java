@@ -21,4 +21,5 @@ module MidnightRPG.MidnightEngine.main {
     opens dev.midnightcoder.cache.pickers to javafx.fxml;
     exports dev.midnightcoder.cache.model;
     exports dev.midnightcoder.engine.renderer.graphics;
+    exports dev.midnightcoder.engine.entity;
 }

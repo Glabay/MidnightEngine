@@ -4,6 +4,8 @@ import dev.midnightcoder.engine.system.Movement;
 import dev.midnightcoder.engine.util.Vec2i;
 import dev.midnightcoder.engine.world.GameMap;
 
+import java.awt.image.BufferedImage;
+
 /**
  * @author Glabay | Glabay-Studios
  * @project MidnightRPG
@@ -17,4 +19,8 @@ public abstract class Avatar extends Mob {
 
     public abstract int getMoveX();
     public abstract int getMoveY();
+
+    public void setAvatarTexture(BufferedImage texture) {
+        this.texture.setImage(texture);
+    }
 }
