@@ -24,9 +24,11 @@ public class Mob extends Entity {
 
     protected Direction direction = Direction.SOUTH;
 
-    public Mob(int x, int y, Movement movement, GameMap currentMap) {
+    public Mob(int x, int y, int width, int height, Movement movement, GameMap currentMap) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         this.movement = movement;
         this.currentMap = currentMap;
         this.hitbox = new Hitbox(x, y, width, height);

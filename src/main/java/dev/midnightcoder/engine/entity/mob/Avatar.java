@@ -13,8 +13,8 @@ import java.awt.image.BufferedImage;
  * @since 2026-05-07
  */
 public abstract class Avatar extends Mob {
-    public Avatar(Vec2i position, Movement movement, GameMap currentMap) {
-        super(position.getX(), position.getY(), movement, currentMap);
+    public Avatar(Vec2i position, int width, int height, Movement movement, GameMap currentMap) {
+        super(position.getX(), position.getY(), width, height, movement, currentMap);
     }
 
     public abstract int getMoveX();
