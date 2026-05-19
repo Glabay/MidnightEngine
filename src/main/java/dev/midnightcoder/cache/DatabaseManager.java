@@ -103,6 +103,12 @@ public class DatabaseManager {
                 "data BLOB," +
                 "compressed_size INTEGER," +
                 "duration REAL)");
+
+            stmt.execute("CREATE TABLE IF NOT EXISTS dialogues (" +
+                "id INTEGER PRIMARY KEY," +
+                "dialogue_id TEXT," +
+                "start_frame_id TEXT," +
+                "frames BLOB)");
         }
     }
 
@@ -457,6 +463,62 @@ public class DatabaseManager {
                     pstmt.setBytes(3, def.getData());
                     pstmt.setLong(4, def.getCompressedSize());
                     pstmt.setDouble(5, def.getDuration());
+                    pstmt.addBatch();
+                }
+                pstmt.executeBatch();
+                conn.commit();
+            }
+            catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        }
+    }
+
+    // Dialogues
+    @SuppressWarnings("unchecked")
+    public List<DialogueDefinition> loadDialogues() throws SQLException {
+        var list = new ArrayList<DialogueDefinition>();
+        try (var conn = getConnection();
+             var stmt = conn.createStatement();
+             var rs = stmt.executeQuery("SELECT * FROM dialogues ORDER BY id")) {
+            while (rs.next()) {
+                var def = new DialogueDefinition(rs.getInt("id"));
+                def.setDialogueId(rs.getString("dialogue_id"));
+                def.setStartFrameId(rs.getString("start_frame_id"));
+
+                byte[] framesData = rs.getBytes("frames");
+                if (framesData != null) {
+                    try (var bais = new java.io.ByteArrayInputStream(framesData);
+                         var ois = new java.io.ObjectInputStream(bais)) {
+                        def.setFrames((List<DialogueFrameDefinition>) ois.readObject());
+                    } catch (Exception e) {
+                        log.error("Error deserializing dialogue frames for ID {}: {}", def.getId(), e.getMessage());
+                    }
+                }
+                list.add(def);
+            }
+        }
+        return list;
+    }
+
+    public void saveDialogues(List<DialogueDefinition> dialogues) throws SQLException {
+        try (var conn = getConnection()) {
+            conn.setAutoCommit(false);
+            try (var pstmt = conn.prepareStatement("INSERT OR REPLACE INTO dialogues (id, dialogue_id, start_frame_id, frames) VALUES (?, ?, ?, ?)")) {
+                for (DialogueDefinition def : dialogues) {
+                    pstmt.setInt(1, def.getId());
+                    pstmt.setString(2, def.getDialogueId());
+                    pstmt.setString(3, def.getStartFrameId());
+
+                    try (var baos = new java.io.ByteArrayOutputStream();
+                         var oos = new java.io.ObjectOutputStream(baos)) {
+                        oos.writeObject(def.getFrames());
+                        pstmt.setBytes(4, baos.toByteArray());
+                    } catch (java.io.IOException e) {
+                        log.error("Error serializing dialogue frames for ID {}: {}", def.getId(), e.getMessage());
+                        pstmt.setNull(4, java.sql.Types.BLOB);
+                    }
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();

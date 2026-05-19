@@ -1,9 +1,6 @@
 package dev.midnightcoder.cache;
 
-import dev.midnightcoder.cache.model.AudioDefinition;
-import dev.midnightcoder.cache.model.ItemDefinition;
-import dev.midnightcoder.cache.model.NPCDefinition;
-import dev.midnightcoder.cache.model.ObjectDefinition;
+import dev.midnightcoder.cache.model.*;
 import dev.midnightcoder.engine.renderer.graphics.Texture;
 
 import javax.imageio.ImageIO;
@@ -69,6 +66,12 @@ public class CacheReader {
     public Optional<AudioDefinition> getAudioDefinition(int id) {
         return cacheManager.getAudio().stream()
                 .filter(def -> def.getId() == id)
+                .findFirst();
+    }
+
+    public Optional<DialogueDefinition> getDialogueDefinition(String dialogueId) {
+        return cacheManager.getDialogues().stream()
+                .filter(def -> def.getDialogueId().equalsIgnoreCase(dialogueId))
                 .findFirst();
     }
 

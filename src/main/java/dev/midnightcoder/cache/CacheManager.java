@@ -15,6 +15,7 @@ import java.util.zip.GZIPInputStream;
 
 public class CacheManager {
     private static final Logger log = LoggerFactory.getLogger(CacheManager.class);
+    private static final String CACHE_DIR = "midnight_cache";
     private final List<Sprite> sprites = new ArrayList<>();
     private final List<SpriteSheet> spriteSheets = new ArrayList<>();
     private final List<Texture> textures = new ArrayList<>();
@@ -23,8 +24,8 @@ public class CacheManager {
     private final List<ObjectDefinition> objects = new ArrayList<>();
     private final List<MapDefinition> maps = new ArrayList<>();
     private final List<AudioDefinition> audio = new ArrayList<>();
+    private final List<DialogueDefinition> dialogues = new ArrayList<>();
 
-    private static final String CACHE_DIR = "midnight_cache";
     private final DatabaseManager databaseManager;
 
     public CacheManager() {
@@ -92,6 +93,8 @@ public class CacheManager {
             maps.addAll(databaseManager.loadMaps());
             audio.clear();
             audio.addAll(databaseManager.loadAudio());
+            dialogues.clear();
+            dialogues.addAll(databaseManager.loadDialogues());
             log.info("Cache loaded from SQLite database.");
         } catch (SQLException e) {
             log.error("Error loading cache from SQLite: {}", e.getMessage());
@@ -108,6 +111,7 @@ public class CacheManager {
             databaseManager.saveObjects(objects);
             databaseManager.saveMaps(maps);
             databaseManager.saveAudio(audio);
+            databaseManager.saveDialogues(dialogues);
         } catch (SQLException e) {
             log.error("Error exporting cache to SQLite: {}", e.getMessage());
         }
@@ -253,6 +257,21 @@ public class CacheManager {
     public void replaceAudio(int id, AudioDefinition def) {
         if (id >= 0 && id < audio.size()) {
             audio.set(id, def);
+        }
+    }
+
+    // Dialogues
+    public List<DialogueDefinition> getDialogues() {
+        return dialogues;
+    }
+
+    public void addDialogue() {
+        dialogues.add(new DialogueDefinition(dialogues.size()));
+    }
+
+    public void replaceDialogue(int id, DialogueDefinition def) {
+        if (id >= 0 && id < dialogues.size()) {
+            dialogues.set(id, def);
         }
     }
 }

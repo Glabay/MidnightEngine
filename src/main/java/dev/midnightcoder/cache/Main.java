@@ -83,8 +83,11 @@ public class Main extends Application {
         var addAudio = new MenuItem("Audio");
             addAudio.setOnAction(_ -> addNewEntry("audio_index"));
 
+        var addDialogue = new MenuItem("Dialogue");
+            addDialogue.setOnAction(_ -> addNewEntry("dialogue_index"));
+
         var addMenu = new Menu("Add New");
-            addMenu.getItems().addAll(addSprite, addSpriteSheet, addTexture, addItem, addNpc, addObject, addMap, addAudio);
+            addMenu.getItems().addAll(addSprite, addSpriteSheet, addTexture, addItem, addNpc, addObject, addMap, addAudio, addDialogue);
 
         var saveItem = new MenuItem("Save Cache");
             saveItem.setOnAction(_ -> cacheManager.save());
@@ -114,6 +117,7 @@ public class Main extends Application {
             rootItem.getChildren().add(createIndexNode("gameobject_index", cacheManager.getObjects().size()));
             rootItem.getChildren().add(createIndexNode("map_index", cacheManager.getMaps().size()));
             rootItem.getChildren().add(createIndexNode("audio_index", cacheManager.getAudio().size()));
+            rootItem.getChildren().add(createIndexNode("dialogue_index", cacheManager.getDialogues().size()));
             rootItem.getChildren().add(createIndexNode("sprite_index", cacheManager.getSprites().size()));
             rootItem.getChildren().add(createIndexNode("spritesheet_index", cacheManager.getSpriteSheets().size()));
         treeView.setRoot(rootItem);
@@ -155,6 +159,7 @@ public class Main extends Application {
             case "spritesheet_index" -> showSpriteSheetEditor(index);
             case "map_index" -> showMapEditor(index);
             case "audio_index" -> showAudioEditor(index);
+            case "dialogue_index" -> showDialogueEditor(index);
         }
     }
 
@@ -191,6 +196,7 @@ public class Main extends Application {
             case "spritesheet_index" -> cacheManager.addSpriteSheet(-1, 1, 1, 32, 32);
             case "map_index" -> addNewMap();
             case "audio_index" -> cacheManager.addAudio("new_audio", new byte[0], 0, 0);
+            case "dialogue_index" -> cacheManager.addDialogue();
         }
         refreshTree();
         // Select the newly added item
@@ -233,6 +239,10 @@ public class Main extends Application {
 
     private void showAudioEditor(int index) {
         editorContainer.setCenter(new AudioEditor(cacheManager.getAudio().get(index), cacheManager).getView());
+    }
+
+    private void showDialogueEditor(int index) {
+        editorContainer.setCenter(new DialogueEditor(cacheManager.getDialogues().get(index), cacheManager).getView());
     }
 
     private void addNewSprite() {
