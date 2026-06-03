@@ -42,6 +42,7 @@ public abstract class GameMap {
     }
 
     public abstract List<?> getEntities();
+    public abstract List<?> getGameObjects();
 
     public TileMap getTileMap() {
         return tileMap;
