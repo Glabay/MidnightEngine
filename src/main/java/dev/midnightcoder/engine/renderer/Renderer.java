@@ -27,4 +27,18 @@ public interface Renderer {
     Graphics2D getGraphics2D();
 
     void drawRectangle(Vec2i position, int size, int size1, Color white);
+
+    default void fillCircle(int centerX, int centerY, int radius, Color color) {
+        if (getGraphics2D() != null) {
+            getGraphics2D().setColor(color);
+            getGraphics2D().fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+        }
+    }
+
+    default void drawCircle(int centerX, int centerY, int radius, Color color) {
+        if (getGraphics2D() != null) {
+            getGraphics2D().setColor(color);
+            getGraphics2D().drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+        }
+    }
 }

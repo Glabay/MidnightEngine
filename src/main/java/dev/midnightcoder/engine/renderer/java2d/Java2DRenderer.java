@@ -53,6 +53,22 @@ public class Java2DRenderer implements Renderer {
     }
 
     @Override
+    public void fillCircle(int centerX, int centerY, int radius, Color color) {
+        if (gfx2D != null) {
+            gfx2D.setColor(color);
+            gfx2D.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+        }
+    }
+
+    @Override
+    public void drawCircle(int centerX, int centerY, int radius, Color color) {
+        if (gfx2D != null) {
+            gfx2D.setColor(color);
+            gfx2D.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+        }
+    }
+
+    @Override
     public void renderTexture(Texture texture, int x, int y) {
         renderImage(texture.image(), x, y);
     }

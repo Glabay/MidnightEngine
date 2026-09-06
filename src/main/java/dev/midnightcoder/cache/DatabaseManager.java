@@ -4,6 +4,7 @@ import dev.midnightcoder.cache.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,10 +15,23 @@ import java.util.UUID;
 public class DatabaseManager {
     private static final Logger log = LoggerFactory.getLogger(DatabaseManager.class);
     private static final String DB_URL = "jdbc:sqlite:midnight_cache/cache.db";
+    private final String dbUrl;
 
     public DatabaseManager() {
+        this(DB_URL);
+    }
+
+    public DatabaseManager(String dbUrl) {
+        this.dbUrl = dbUrl;
         try {
             Class.forName("org.sqlite.JDBC");
+            if (dbUrl.startsWith("jdbc:sqlite:") && !dbUrl.equals("jdbc:sqlite::memory:")) {
+                var filePath = dbUrl.substring("jdbc:sqlite:".length());
+                var dbFile = new File(filePath);
+                if (dbFile.getParentFile() != null && !dbFile.getParentFile().exists()) {
+                    dbFile.getParentFile().mkdirs();
+                }
+            }
             init();
         }
         catch (ClassNotFoundException | SQLException e) {
@@ -26,7 +40,7 @@ public class DatabaseManager {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL);
+        return DriverManager.getConnection(dbUrl);
     }
 
     private void init() throws SQLException {
@@ -83,7 +97,24 @@ public class DatabaseManager {
                 "sprite_sheet_id INTEGER," +
                 "size INTEGER," +
                 "combat_level INTEGER," +
-                "actions TEXT)");
+                "actions TEXT," +
+                "atk_speed INTEGER," +
+                "health INTEGER," +
+                "attack INTEGER," +
+                "strength INTEGER," +
+                "defence INTEGER," +
+                "ranged INTEGER," +
+                "magic INTEGER)");
+
+            // Migrations for npcs
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN atk_speed INTEGER DEFAULT 4"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN health INTEGER DEFAULT 10"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN attack INTEGER DEFAULT 1"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN strength INTEGER DEFAULT 1"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN defence INTEGER DEFAULT 1"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN ranged INTEGER DEFAULT 1"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN magic INTEGER DEFAULT 1"); } catch (SQLException ignored) {}
+            try { stmt.execute("ALTER TABLE npcs ADD COLUMN death_delay INTEGER DEFAULT 4"); } catch (SQLException ignored) {}
 
             stmt.execute("CREATE TABLE IF NOT EXISTS objects (" +
                 "id INTEGER PRIMARY KEY," +
@@ -317,14 +348,41 @@ public class DatabaseManager {
              var rs = stmt.executeQuery("SELECT * FROM npcs ORDER BY id")) {
             while (rs.next()) {
                 var def = new NPCDefinition(rs.getInt("id"));
-                    def.setName(rs.getString("name"));
-                    def.setDescription(rs.getString("description"));
-                    def.setSpriteSheetId(rs.getInt("sprite_sheet_id"));
-                    def.setSize(rs.getInt("size"));
-                    def.setCombatLevel(rs.getInt("combat_level"));
+                def.setName(rs.getString("name"));
+                def.setDescription(rs.getString("description"));
+                def.setSpriteSheetId(rs.getInt("sprite_sheet_id"));
+                def.setSize(rs.getInt("size"));
+                def.setCombatLevel(rs.getInt("combat_level"));
 
                 String[] actions = rs.getString("actions").split("\\|", -1);
                 System.arraycopy(actions, 0, def.getActions(), 0, Math.min(actions.length, 5));
+
+                int atkSpeed = rs.getInt("atk_speed");
+                def.setAttackSpeed(atkSpeed > 0 ? atkSpeed : 4);
+
+                int health = rs.getInt("health");
+                def.setHealth(health > 0 ? health : (def.getCombatLevel() > 0 ? def.getCombatLevel() * 2 : 10));
+
+                int attack = rs.getInt("attack");
+                def.setAttack(attack > 0 ? attack : 1);
+
+                int strength = rs.getInt("strength");
+                def.setStrength(strength > 0 ? strength : 1);
+
+                int defence = rs.getInt("defence");
+                def.setDefence(defence > 0 ? defence : 1);
+
+                int ranged = rs.getInt("ranged");
+                def.setRanged(ranged > 0 ? ranged : 1);
+
+                int magic = rs.getInt("magic");
+                def.setMagic(magic > 0 ? magic : 1);
+
+                int deathDelay = 4;
+                try {
+                    deathDelay = rs.getInt("death_delay");
+                } catch (SQLException ignored) {}
+                def.setDeathDelay(deathDelay > 0 ? deathDelay : 4);
 
                 list.add(def);
             }
@@ -335,7 +393,7 @@ public class DatabaseManager {
     public void saveNpcs(List<NPCDefinition> npcs) throws SQLException {
         try (var conn = getConnection()) {
             conn.setAutoCommit(false);
-            try (var pstmt = conn.prepareStatement("INSERT OR REPLACE INTO npcs (id, name, description, sprite_sheet_id, size, combat_level, actions) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+            try (var pstmt = conn.prepareStatement("INSERT OR REPLACE INTO npcs (id, name, description, sprite_sheet_id, size, combat_level, actions, atk_speed, health, attack, strength, defence, ranged, magic, death_delay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                 for (NPCDefinition def : npcs) {
                     pstmt.setInt(1, def.getId());
                     pstmt.setString(2, def.getName());
@@ -344,6 +402,14 @@ public class DatabaseManager {
                     pstmt.setInt(5, def.getSize());
                     pstmt.setInt(6, def.getCombatLevel());
                     pstmt.setString(7, String.join("|", def.getActions()));
+                    pstmt.setInt(8, def.getAttackSpeed());
+                    pstmt.setInt(9, def.getHealth());
+                    pstmt.setInt(10, def.getAttack());
+                    pstmt.setInt(11, def.getStrength());
+                    pstmt.setInt(12, def.getDefence());
+                    pstmt.setInt(13, def.getRanged());
+                    pstmt.setInt(14, def.getMagic());
+                    pstmt.setInt(15, def.getDeathDelay() > 0 ? def.getDeathDelay() : 4);
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();
