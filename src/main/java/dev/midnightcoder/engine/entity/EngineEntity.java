@@ -9,7 +9,7 @@ import dev.midnightcoder.engine.renderer.graphics.Texture;
  * @social Discord: Glabay
  * @since 2026-04-30
  */
-public abstract class Entity {
+public abstract class EngineEntity {
     protected int width;
     protected int height;
 

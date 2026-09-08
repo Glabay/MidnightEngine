@@ -1,5 +1,6 @@
 package dev.midnightcoder.engine.world;
 
+import dev.midnightcoder.engine.entity.EngineEntity;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.renderer.camera.Camera2D;
 import dev.midnightcoder.engine.world.tile.Tile;
@@ -42,7 +43,7 @@ public abstract class GameMap {
     }
 
     public abstract List<?> getEntities();
-    public abstract List<?> getGameObjects();
+    public abstract List<? extends EngineEntity> getGameObjects();
 
     public TileMap getTileMap() {
         return tileMap;

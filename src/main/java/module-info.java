@@ -22,4 +22,5 @@ module MidnightRPG.MidnightEngine.main {
     exports dev.midnightcoder.cache.model;
     exports dev.midnightcoder.engine.renderer.graphics;
     exports dev.midnightcoder.engine.entity;
+    exports dev.midnightcoder.engine.renderer;
 }

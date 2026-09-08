@@ -1,7 +1,7 @@
 package dev.midnightcoder.engine.entity.mob;
 
 import dev.midnightcoder.engine.entity.Direction;
-import dev.midnightcoder.engine.entity.Entity;
+import dev.midnightcoder.engine.entity.EngineEntity;
 import dev.midnightcoder.engine.entity.Hitbox;
 import dev.midnightcoder.engine.renderer.Renderer;
 import dev.midnightcoder.engine.system.Movement;
@@ -13,7 +13,7 @@ import dev.midnightcoder.engine.world.GameMap;
  * @social Discord: Glabay
  * @since 2026-05-01
  */
-public class Mob extends Entity {
+public class Mob extends EngineEntity {
     protected final int moveSpeed = 1;
     protected final Movement movement;
     protected final GameMap currentMap;

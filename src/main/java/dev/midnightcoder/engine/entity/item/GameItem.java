@@ -1,6 +1,6 @@
 package dev.midnightcoder.engine.entity.item;
 
-import dev.midnightcoder.engine.entity.Entity;
+import dev.midnightcoder.engine.entity.EngineEntity;
 
 /**
  * @author Glabay | Glabay-Studios
@@ -8,5 +8,5 @@ import dev.midnightcoder.engine.entity.Entity;
  * @social Discord: Glabay
  * @since 2026-05-06
  */
-public abstract class GameItem extends Entity {
+public abstract class GameItem extends EngineEntity {
 }
